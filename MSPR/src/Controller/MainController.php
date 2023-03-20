@@ -18,4 +18,11 @@ class MainController extends AbstractController
             'posts' => $pr->findAll()
         ]);
     }
+
+    #[Route('/profil', name: 'app_main')]
+    public function profil(EntityManagerInterface $em): Response
+    {
+        return $this->render('profile',['posts'=> $this->getUser()->getPosts()]);
+    }
+
 }

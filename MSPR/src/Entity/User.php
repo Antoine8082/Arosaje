@@ -39,11 +39,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user_comment', targetEntity: Comments::class, orphanRemoval: true)]
     private Collection $Comments;
 
+    #[ORM\OneToMany(mappedBy: 'guardian', targetEntity: Post::class)]
+    private Collection $guarded_posts;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->post = new ArrayCollection();
         $this->Comments = new ArrayCollection();
+        $this->guarded_posts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,6 +174,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($comment->getUserComment() === $this) {
                 $comment->setUserComment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Post>
+     */
+    public function getGuardedPosts(): Collection
+    {
+        return $this->guarded_posts;
+    }
+
+    public function addGuardedPost(Post $guardedPost): self
+    {
+        if (!$this->guarded_posts->contains($guardedPost)) {
+            $this->guarded_posts->add($guardedPost);
+            $guardedPost->setGuardian($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGuardedPost(Post $guardedPost): self
+    {
+        if ($this->guarded_posts->removeElement($guardedPost)) {
+            // set the owning side to null (unless already changed)
+            if ($guardedPost->getGuardian() === $this) {
+                $guardedPost->setGuardian(null);
             }
         }
 

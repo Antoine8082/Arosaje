@@ -31,6 +31,9 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user_post = null;
 
+    #[ORM\ManyToOne(inversedBy: 'guarded_posts')]
+    private ?User $guardian = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -114,6 +117,18 @@ class Post
     public function setUserPost(?User $user_post): self
     {
         $this->user_post = $user_post;
+
+        return $this;
+    }
+
+    public function getGuardian(): ?User
+    {
+        return $this->guardian;
+    }
+
+    public function setGuardian(?User $guardian): self
+    {
+        $this->guardian = $guardian;
 
         return $this;
     }

@@ -4,6 +4,10 @@
     {% for post in posts %}
         <div class="card">
             <div class="title">{{ post.title }}</div>
+            <div class="description">{{ post.description }}</div>
         </div>
+        {% for comments in post.comments %}
+            {{ comment.content }}
+        {% endfor %}
     {% endfor %}
 {% endblock %}

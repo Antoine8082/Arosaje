@@ -9,7 +9,6 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
-
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
@@ -25,7 +24,6 @@
             {% if app.user %}
                 <li class="nav-item" style="margin-left: 12%" ><a href="{{ path('app_profile') }}">Profile</a></li>
             {% endif %}
-
         </ul>
     </nav>
         {% block body %}

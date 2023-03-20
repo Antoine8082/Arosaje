@@ -14,7 +14,7 @@ class MainController extends AbstractController
     public function index(EntityManagerInterface $em): Response
     {
         $pr = $em->getRepository(Post::class);
-        return $this->render('main/index.html.twig', [
+        return $this->render('main/form.html.twig', [
             'posts' => $pr->findAll()
         ]);
     }
@@ -22,7 +22,7 @@ class MainController extends AbstractController
     #[Route('/profile', name: 'app_profile')]
     public function profile(EntityManagerInterface $em): Response
     {
-        return $this->render('profile/index.html.twig',['posts'=> $this->getUser()->getPosts(),'guardedPosts'=>$this->getUser()->getGuardedPosts()]);
+        return $this->render('profile/form.html.twig',['posts'=> $this->getUser()->getPosts(),'guardedPosts'=>$this->getUser()->getGuardedPosts()]);
     }
 
 }

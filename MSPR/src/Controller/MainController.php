@@ -19,10 +19,10 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/profil', name: 'app_main')]
-    public function profil(EntityManagerInterface $em): Response
+    #[Route('/profile', name: 'app_profile')]
+    public function profile(EntityManagerInterface $em): Response
     {
-        return $this->render('profile',['posts'=> $this->getUser()->getPosts()]);
+        return $this->render('profile/index.html.twig',['posts'=> $this->getUser()->getPosts(),'guardedPosts'=>$this->getUser()->getGuardedPosts()]);
     }
 
 }

@@ -1,0 +1,46 @@
+.navbar{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+.nav-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nav-item{
+    position: relative;
+    list-style: none;
+    margin-left: 3%;
+    margin-right: 3%;
+    font-size: 1rem;
+}
+.nav-item::after{
+    content: "";
+    position: absolute;
+    display: block;
+    bottom: 0;
+    left: 50%;
+    height: 2px;
+    width: 0;
+    background : black;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+}
+.nav-item:hover::after{
+    width: 100%;
+    left: 0;
+}
+.logo{
+    height: 5%;
+    width: 5%;
+}
+.input{
+    border-style: solid;
+    border-color: gray;
+    border-radius: 25px;
+    background:none;
+}
+a{
+    text-decoration: none;
+    color: unset;
+}

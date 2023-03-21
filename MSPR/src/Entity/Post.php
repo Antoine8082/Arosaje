@@ -35,7 +35,7 @@ class Post
     #[ORM\ManyToOne(inversedBy: 'guarded_posts')]
     private ?User $guardian = null;
 
-    #[ORM\Column(type: Types::BLOB)]
+    #[ORM\Column(type: "string")]
     private $image = null;
 
     public function __construct()

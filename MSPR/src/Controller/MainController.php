@@ -30,21 +30,17 @@ class MainController extends AbstractController
             $em->flush();
         }
         $pr = $em->getRepository(Post::class);
-        $currentRoute = $request->get('_route');
-
         return $this->render('main/index.html.twig', [
-            'posts' => $pr->findAll(),
-            'route' => $currentRoute
+            'posts' => $pr->findAll()
         ]);
     }
 
     #[Route('/profile', name: 'app_profile')]
-    public function profile(Request $request): Response
+    public function profile(): Response
     {
-        $currentRoute = $request->get('_route');
+
         return $this->render('profile/index.html.twig',['posts'=> $this->getUser()->getPost(),
-            'guardedPosts'=>$this->getUser()->getGuardedPosts(),
-            'route'=>$currentRoute
+            'guardedPosts'=>$this->getUser()->getGuardedPosts()
             ]
         );
     }

@@ -1,6 +1,5 @@
-{% extends 'base.html.twig' %}
 {% block body %}
-    <form action="{{ path('/') }}" method="post">
+    <form action="{{ path('app_main') }}" method="post">
         <label for="title">Titre : </label>
         <input type="text" name="title" id="title">
         <br>
@@ -8,13 +7,14 @@
         <input type="text" name="description" id="description">
         <br>
         <label for="image">Image : </label>
-        <input type="text" name="img" id="image">
+        <input type="file" name="img" id="image" accept="image/png">
         <br>
-        <input type="text" placeholder="Plante" id="input_search">
+        {#<input type="text" placeholder="Plante" id="input_search">
         <div class="results">
-            {% for pokemon in pokemonList %}
-                <a class="option" href="/?pokemon_id={{forloop.counter}}">{{pokemon.name|capfirst}}</a>
+            {% for plant in plants %}
+                <a class="option">{{plant.label}}</a>
             {% endfor %}
-        </div>
+        </div>#}
+        <button type="submit">Envoyer</button>
     </form>
 {% endblock %}

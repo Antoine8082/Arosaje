@@ -17,15 +17,15 @@
     <nav class="navbar">
         <img class="logo" src='{{ asset('assets/img/arosajeLogoLight.png') }}' alt="logo">
         <ul class="nav-list">
-            {% if isMain == false %}
+            {% if not app.request.attributes.get('_route') starts with 'app_main' %}
                 <li class="nav-item"><a href="/">Accueil</a></li>
             {% endif %}
 
-            {% if app.user == false %}
+            {% if  not app.user %}
                 <li class="nav-item">Connexion</li>
             {% endif %}
             <li class="nav-item" style="margin-left: 12%"></li>
-            {% if app.user and isProfile == false %}
+            {% if app.user %}
                 <li class="nav-item" style="margin-left: 12%" ><a href="{{ path('app_profile') }}">Profile</a></li>
             {% endif %}
         </ul>

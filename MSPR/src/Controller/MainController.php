@@ -20,9 +20,12 @@ class MainController extends AbstractController
         }
         if($request->getMethod() == "POST"){
             $post = new Post();
+            $uploadFile = $request->files->get('img');
             $post->setDescription($_POST['description']);
             $post->setTitle($_POST['title']);
             $post->setUserPost($this->getUser());
+            $imageData = base64_encode(file_get_contents($uploadFile->getRealPath()));
+            $post->setImage($imageData);
             $em->persist($post);
             $em->flush();
         }

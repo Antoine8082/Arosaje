@@ -3,9 +3,10 @@
     <h3>Liste demandes</h3>
 {{ include('post/form.html.twig') }}
     {% for post in posts %}
+        <a href="{{ path('app_post_detail', {id : post.id }) }}">
         <div class="card">
             <div class="title">{{ post.title }}</div>
             <div class="description">{{ post.description }}</div>
-        </div>
+        </div></a>
         {% endfor %}
 {% endblock %}

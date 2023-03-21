@@ -1,5 +1,5 @@
 {% block body %}
-    <form action="{{ path('app_main') }}" method="post">
+    <form action="{{ path('app_main') }}" method="post" enctype="multipart/form-data">
         <label for="title">Titre : </label>
         <input type="text" name="title" id="title">
         <br>
@@ -7,7 +7,7 @@
         <input type="text" name="description" id="description">
         <br>
         <label for="image">Image : </label>
-        <input type="file" name="img" id="image" accept="image/png">
+        <input type="file" name="img" id="image" accept=".jpg,.jpeg,.png">
         <br>
         {#<input type="text" placeholder="Plante" id="input_search">
         <div class="results">

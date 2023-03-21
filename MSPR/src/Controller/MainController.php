@@ -13,16 +13,25 @@ class MainController extends AbstractController
     #[Route('/', name: 'app_main')]
     public function index(EntityManagerInterface $em): Response
     {
+        $isMain = true;
+        $isProfile = false;
         $pr = $em->getRepository(Post::class);
-        return $this->render('main/form.html.twig', [
-            'posts' => $pr->findAll()
+        return $this->render('main/index.html.twig', [
+            'posts' => $pr->findAll(),
+            'isProfile'=>$isProfile,
+            'isMain'=>$isMain
         ]);
     }
 
     #[Route('/profile', name: 'app_profile')]
     public function profile(EntityManagerInterface $em): Response
     {
-        return $this->render('profile/form.html.twig',['posts'=> $this->getUser()->getPosts(),'guardedPosts'=>$this->getUser()->getGuardedPosts()]);
+        $isMain = false;
+        $isProfilePage = true;
+        return $this->render('profile/index.html.twig',['posts'=> $this->getUser()->getPost(),
+            'guardedPosts'=>$this->getUser()->getGuardedPosts(),
+            'isProfile'=> $isProfilePage,
+            'isMain'=>$isMain]);
     }
 
 }

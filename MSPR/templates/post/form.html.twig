@@ -1,4 +1,7 @@
+{% extends 'base.html.twig' %}
 {% block body %}
+    <link rel="stylesheet" href="{{ asset('assets/css/postForm.css') }}">
+    <div id="card">
     <form action="{{ path('app_main') }}" method="post" enctype="multipart/form-data">
         <label for="title">Titre : </label>
         <input type="text" name="title" id="title">
@@ -17,4 +20,5 @@
         </div>#}
         <button type="submit">Envoyer</button>
     </form>
+    </div>
 {% endblock %}

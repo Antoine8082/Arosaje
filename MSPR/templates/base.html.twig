@@ -24,7 +24,10 @@
         {% if  not app.user %}
             <li class="nav-item">Connexion</li>
         {% endif %}
-        <li class="nav-item" style="margin-left: 12%"><a href="{{ path('app_new_post') }}">+</a></li>
+        {% if app.request.attributes.get('_route') != "app_new_post" %}
+            <li class="nav-item" style="margin-left: 12%"><a href="{{ path('app_new_post') }}">+</a></li>
+        {% endif %}
+
         {% if app.user  and app.request.attributes.get('_route') != "app_profile" %}
             <li class="nav-item" style="margin-left: 12%"><a href="{{ path('app_profile') }}">Profile</a></li>
             <li class="nav-item" style="margin-left: 12%"><a href="{{ path('app_logout') }}">Déconnexion</a></li>

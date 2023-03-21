@@ -34,7 +34,6 @@ class PostController extends AbstractController
         $post->setImage($newFileName);
         $em->persist($post);
         $em->flush();
-        $this->redirectToRoute('app_main');
     }
 
         return $this->render('post/form.html.twig');

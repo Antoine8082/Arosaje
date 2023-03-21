@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.description }}</p>
+    <img src="{{ post.image }}" alt="img">
+    <section>
+        <h3>Espace commentaire</h3>
+        <input type="text">
+        {% for comment in post.comments %}
+            <div class="comment-card {% if comment.type == "BOT"%}{% endif %}">
+                <div class="author">{{ comment.user.email }}</div>
+                <div class="dateSend"></div>
+                <div class="comment-content">{{ comment.content }}</div>
+            </div>
+        {% endfor %}
+    </section>
+{% endblock %}

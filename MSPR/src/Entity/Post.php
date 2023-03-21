@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
@@ -33,6 +34,9 @@ class Post
 
     #[ORM\ManyToOne(inversedBy: 'guarded_posts')]
     private ?User $guardian = null;
+
+    #[ORM\Column(type: Types::BLOB)]
+    private $image = null;
 
     public function __construct()
     {
@@ -129,6 +133,18 @@ class Post
     public function setGuardian(?User $guardian): self
     {
         $this->guardian = $guardian;
+
+        return $this;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

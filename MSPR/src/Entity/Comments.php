@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CommentsRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommentsRepository::class)]
@@ -26,6 +27,9 @@ class Comments
     #[ORM\ManyToOne(inversedBy: 'Comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user_comment = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $send_date = null;
 
     public function getId(): ?int
     {
@@ -76,6 +80,18 @@ class Comments
     public function setUserComment(?User $user_comment): self
     {
         $this->user_comment = $user_comment;
+
+        return $this;
+    }
+
+    public function getSendDate(): ?\DateTimeInterface
+    {
+        return $this->send_date;
+    }
+
+    public function setSendDate(\DateTimeInterface $send_date): self
+    {
+        $this->send_date = $send_date;
 
         return $this;
     }

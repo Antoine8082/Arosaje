@@ -1,22 +1,20 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Mouse page</title>
-    <link rel="stylesheet" href="{{ asset('assets/css/profile.css') }}">
-</head>
-<body>
-
-{% for userPost in posts %}
-    <div id="card">
-        <h3>{{ userPost.title}}</h3>
-        <p>{{ userPost.description }}</p>
-        <p>{{ app.user.email }}</p>
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <h3 style="text-align: center">Liste demandes</h3>
+    <div class="container-cards">
+        {% for userPost in posts %}
+            {% set imagePath = '/uploads/images/' ~ userPost.image %}
+            <a href="{{ path('app_post_detail', {id : userPost.id }) }}" id="card">
+                <div class="card-content">
+                    <h3>{{ userPost.title}}</h3>
+                    <p>{{ userPost.description }}</p>
+                    <p>{{ userPost.userPost.email }}</p>
+                </div>
+                <div class="image">
+                    <img src="{{ imagePath }}" alt="" id="img_card">
+                </div>
+            </a>
+        {% endfor %}
     </div>
-{% endfor %}
-</body>
-
-</html>
 {% endblock %}

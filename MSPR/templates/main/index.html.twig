@@ -2,7 +2,6 @@
 {% block body %}
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <h3>Liste demandes</h3>
-{{ include('post/form.html.twig') }}
     {% for userPost in posts %}
         {% set imagePath = '/uploads/images/' ~ userPost.image %}
         <a href="{{ path('app_post_detail', {id : userPost.id }) }}">

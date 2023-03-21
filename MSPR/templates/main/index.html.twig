@@ -4,7 +4,7 @@
     <h3>Liste demandes</h3>
 {{ include('post/form.html.twig') }}
     {% for userPost in posts %}
-        <a href="{{ path('app_post_detail', {id : post.id }) }}">
+        <a href="{{ path('app_post_detail', {id : userPost.id }) }}">
         <div id="card">
             <h3>{{ userPost.title}}</h3>
             <p>{{ userPost.description }}</p>

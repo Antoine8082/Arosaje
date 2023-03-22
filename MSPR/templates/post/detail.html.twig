@@ -19,17 +19,34 @@
     <img src="{{ imagePath }}" alt="img">
     <section>
         <h3>Espace commentaire</h3>
-        <input type="text">
-        {% for comment in post.comments %}
-            <div class="comment-card {% if comment.type == "BOT"%}{% endif %}">
-                <div class="author">{{ comment.user.email }}</div>
-                <div class="dateSend">{{ comment.sendDate }}</div>
-                <div class="comment-content">{{ comment.content }}</div>
+        <textarea id="comment" name="comment"
+              rows="5" cols="33">
+        </textarea>
+        <button id="btn-comment">Envoyer</button>
+
+            <div id="comments-container">
+                {% for comment in post.comments %}
+                <div class="comment-card {% if comment.type == "BOT"%}{% endif %}">
+                    <div class="author" id="card_author">{{ comment.userComment.email }}</div>
+                    <div class="dateSend" id="card_date">{{ comment.sendDate|date }}</div>
+                    <div class="comment-content" id="card_content">{{ comment.content }}</div>
+                {% endfor %}
             </div>
-        {% endfor %}
+            <template id="comment-area">
+                <div class="comment-card">
+                    <div class="author" id="card_author"></div>
+                    <div class="dateSend" id="card_date"></div>
+                    <div class="comment-content" id="card_content"></div>
+                </div>
+            </template>
+
     </section>
     <script>
         const inputGuard = document.querySelector('#guardian')
+        const btnComment = document.querySelector('#btn-comment');
+        btnComment.addEventListener('click',()=>{
+            sendComment();
+        })
         inputGuard.addEventListener('change', ()=> {
            if(inputGuard.value.length >= 4){
                setGuardian(inputGuard.value)
@@ -57,6 +74,42 @@
                         txt.classList.remove('success')
                     }
                 } );
+        }
+        function sendComment(){
+            const contentComment = document.querySelector('#comment').value
+            const opts = {
+                method : "POST",
+                body : JSON.stringify({
+                    post : {{ post.id }},
+                    sender : {{ app.user.id }},
+                    content : contentComment
+                })
+            };
+            fetch('/api/addComment',opts)
+                .then(res => res.json())
+                .then(res => {
+                    buildCommentPart()
+                })
+        }
+        function fetchComments(){
+            const opts = {
+                method : "POST",
+                body : JSON.stringify({
+                    post : {{ post.id }},
+                })
+            };
+        }
+        function buildCommentPart(){
+                const template = document.querySelector('#comment-area')
+                const clone = template.content.cloneNode(true);
+                const contentComment = document.querySelector('#comment').value
+                const author = clone.querySelector('#card_author');
+                const date = clone.querySelector('#card_date');
+                const content = clone.querySelector('#card_content')
+                author.textContent = "{{ app.user.email }}";
+                date.textContent =new Date().toLocaleString();
+                content.textContent = contentComment;
+                document.querySelector('#comments-container').appendChild(clone);
         }
     </script>
 {% endblock %}

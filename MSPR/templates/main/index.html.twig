@@ -7,7 +7,7 @@
             {% set imagePath = '/uploads/images/' ~ userPost.image %}
             <a href="{{ path('app_post_detail', {id : userPost.id }) }}" id="card">
                     <div class="card-content">
-                        <h3>{{ userPost.title}}</h3>
+                        <h3>{{ userPost.title|capitalize }}</h3>
                         <p>{{ userPost.description }}</p>
                         <p>{{ userPost.userPost.email }}</p>
                     </div>

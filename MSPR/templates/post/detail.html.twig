@@ -1,5 +1,18 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/detail.css') }}">
+{% endblock %}
 {% block body %}
+    {% if app.user.id == post.userPost.id %}
+        <label for="guardian">Gardien :</label>
+        {% if post.guardian %}
+            <input type="text" id="guardian" value="{{ post.guardian.email }}" disabled>
+        {% else %}
+            <input type="text" id="guardian">
+        {% endif %}
+    {% endif %}
+    <span id="res_fetch_guardian"></span>
     {% set imagePath = '/uploads/images/' ~ post.image %}
     <h3>{{ post.title }}</h3>
     <p>{{ post.description }}</p>
@@ -15,4 +28,35 @@
             </div>
         {% endfor %}
     </section>
+    <script>
+        const inputGuard = document.querySelector('#guardian')
+        inputGuard.addEventListener('change', ()=> {
+           if(inputGuard.value.length >= 4){
+               setGuardian(inputGuard.value)
+           }
+        });
+        function setGuardian(inputGuardVal){
+            const opts = {
+                method : "POST",
+                body : JSON.stringify({
+                    post : {{ post.id }},
+                    guardian : inputGuardVal
+                }),
+            };
+            fetch('/api/guardian',opts)
+                .then((res)=>res.json())
+                .then((res) => {
+                    const txt = document.querySelector('#res_fetch_guardian');
+                    if(res.true){
+                        txt.textContent = "Success !"
+                        txt.classList.add('success')
+                        txt.classList.remove('error')
+                    }else{
+                        txt.textContent = "Unknown user"
+                        txt.classList.add('error')
+                        txt.classList.remove('success')
+                    }
+                } );
+        }
+    </script>
 {% endblock %}

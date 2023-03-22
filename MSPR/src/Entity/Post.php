@@ -72,7 +72,7 @@ class Post
         return $this;
     }
 
-    public function isIsHeld(): ?bool
+    public function IsHeld(): ?bool
     {
         return $this->is_held;
     }

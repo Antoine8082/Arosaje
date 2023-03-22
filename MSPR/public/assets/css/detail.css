@@ -4,3 +4,7 @@
 .error{
     background-color: red;
 }
+#img_card{
+    width: 100px;
+    height: 100px;
+}

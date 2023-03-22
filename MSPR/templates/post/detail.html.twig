@@ -16,7 +16,9 @@
     {% set imagePath = '/uploads/images/' ~ post.image %}
     <h3>{{ post.title }}</h3>
     <p>{{ post.description }}</p>
-    <img src="{{ imagePath }}" alt="img">
+    <div class="image">
+        <img src="{{ imagePath }}" alt="" id="img_card">
+    </div>
     <section>
         <h3>Espace commentaire</h3>
         <input type="text">

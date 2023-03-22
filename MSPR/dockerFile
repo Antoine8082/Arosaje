@@ -1,0 +1,26 @@
+# Use an official PHP runtime as a parent image
+FROM php:8.1.2-apache
+
+# Install required PHP extensions
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Set up the working directory
+WORKDIR /var/www/html
+
+# Copy the application files to the working directory
+COPY . .
+
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install the application dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Set up the MySQL server
+RUN apt-get update && apt-get install -y mysql-server
+
+# Copy the MySQL configuration file
+COPY my.cnf /etc/mysql/my.cnf
+
+# Start the MySQL service
+CMD service mysql start && tail -f /dev/null

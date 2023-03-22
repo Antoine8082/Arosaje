@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Comments;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,5 +30,38 @@ class APIController extends AbstractController
             return new JsonResponse(true);
         }
         return new JsonResponse('Hello');
+    }
+    #[Route('/api/addComment', name : 'app_api_add_comment')]
+    function addComment(Request $request,PostRepository $pr, UserRepository $ur, EntityManagerInterface $em){
+        if($request->getMethod() == "POST"){
+            try{
+                $data = json_decode($request->getContent(),true);
+                $post = $pr->find($data['post']);
+                $userComment = $ur->find($data['sender']);
+                $comment = new Comments();
+                $comment->setContent($data['content']);
+                $comment->setPost($post);
+                $comment->setSendDate(new \DateTime('now'));
+                $comment->setUserComment($userComment);
+                $em->persist($comment);
+                $post->addComment($comment);
+                $em->flush();
+            }catch (\Exception $e){
+                return new JsonResponse(false);
+            }
+            return new JsonResponse(true);
+        }
+    }
+    #[Route('/api/commentsByPost', name : 'app_api_comments_by_post')]
+    function commentsByPost(Request $request, PostRepository $pr){
+        if($request->getMethod() == "POST"){
+            try{
+                $data = json_decode($request->getContent(),true);
+                $post = $pr->find($data['post']);
+                return new JsonResponse(json_encode($post));
+            }catch (\Exception $e){
+                return new JsonResponse(false);
+            }
+        }
     }
 }

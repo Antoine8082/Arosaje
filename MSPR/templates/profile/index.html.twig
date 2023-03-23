@@ -9,7 +9,24 @@
                 <div class="card-content">
                     <h3>{{ userPost.title}}</h3>
                     <p>{{ userPost.description }}</p>
+                    <label for="guardian">Guardian : </label>
+                    {% if userPost.guardian %}
+                        <input type="text" id="guardian" value="{{ userPost.guardian.email }}" disabled>
+                    {% endif %}
                     <p>{{ userPost.userPost.email }}</p>
+                </div>
+                <div class="image">
+                    <img src="{{ imagePath }}" alt="" id="img_card">
+                </div>
+            </a>
+        {% endfor %}
+        {% for userGuardedPost in guardedPosts %}
+            {% set imagePath = '/uploads/images/' ~ userGuardedPost.image %}
+            <a href="{{ path('app_post_detail', {id : userGuardedPost.id }) }}" id="card">
+                <div class="card-content">
+                    <h3>{{ userGuardedPost.title}}</h3>
+                    <p>{{ userGuardedPost.description }}</p>
+                    <p>{{ userGuardedPost.userPost.email }}</p>
                 </div>
                 <div class="image">
                     <img src="{{ imagePath }}" alt="" id="img_card">

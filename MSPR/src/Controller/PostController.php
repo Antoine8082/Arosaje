@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,8 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     #[Route('/posts/{id}', name: 'app_post_detail')]
-    public function detail(Post $post): Response
+    public function detail(Post $post,Request $request,EntityManagerInterface $em): Response
     {
+        if($request->getMethod() == "POST") {
+            $ur = $em->getRepository(User::class);
+            $user = $ur->findOneBy($_POST['guardian']);
+            $user->addGuardedPost($post);
+            $em->persist($user);
+            $em->flush();
+        }
         return $this->render('post/detail.html.twig', [
             'post' => $post,
         ]);

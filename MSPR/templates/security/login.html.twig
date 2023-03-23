@@ -25,7 +25,7 @@
                             <label for="inputPassword" class="bigFont">Mot de passe</label>
                             <input class="form__password" type="password" placeholder="******" name="password" id="inputPassword" autocomplete="current-password" required />
                         </form><span class="bigFont">Oubli d'<a class="form__link bigFont" href="#">e-mail</a><a>/</a><a class="form__link bigFont" href="#">mot de passe</a></span>
-                        <p> <a class="form__link bigFont" href="">Créer son compte</a></p>
+                        <p> <a class="form__link bigFont" href="{{ path('app_register')}}">Créer son compte</a></p>
                     </div>
                     <input type="hidden" name="_csrf_token"
                            value="{{ csrf_token('authenticate') }}"

@@ -1,15 +1,16 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <h3 style="text-align: center">Liste demandes</h3>
     <div class="container-cards">
-        {% for userPost in posts %}
-            {% set imagePath = '/uploads/images/' ~ userPost.image %}
-            <a href="{{ path('app_post_detail', {id : userPost.id }) }}" id="card">
+        {% for post in posts %}
+            {% set imagePath = '/uploads/images/' ~ post.image %}
+            <a href="{{ path('app_post_detail', {id : post.id }) }}" id="card">
                     <div class="card-content">
-                        <h3>{{ userPost.title|capitalize }}</h3>
-                        <p>{{ userPost.description }}</p>
-                        <p>{{ userPost.userPost.email }}</p>
+                        <h3>{{ post.title|capitalize }}</h3>
+                        <p>{{ post.description }}</p>
+                        <p>{{ post.userPost.email }}</p>
                     </div>
                     <div class="image">
                         <img src="{{ imagePath }}" alt="" id="img_card">

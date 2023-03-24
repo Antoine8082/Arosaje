@@ -38,6 +38,10 @@ class Post
     #[ORM\Column(type: "string")]
     private $image = null;
 
+    #[ORM\ManyToOne(inversedBy: 'posts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Plant $plantId = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -145,6 +149,18 @@ class Post
     public function setImage($image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getPlantId(): ?Plant
+    {
+        return $this->plantId;
+    }
+
+    public function setPlantId(?Plant $plantId): self
+    {
+        $this->plantId = $plantId;
 
         return $this;
     }

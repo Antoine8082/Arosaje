@@ -16,7 +16,9 @@
 </head>
 <body>
 <nav class="navbar">
+    <a class="logo-homeLink" href="{{ path('app_main') }}">
     <img class="logo" src='{{ asset('assets/img/arosajeLogoLight.png') }}' alt="logo">
+    </a>
     <ul class="nav-list">
         {% if app.request.attributes.get('_route') != "app_main" %}
             <li class="nav-item"><a href="/">Accueil</a></li>

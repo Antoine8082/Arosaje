@@ -26,7 +26,8 @@
     transition: .5s;
 }
 textarea {
-    height: 100px;
-    width: 100%;
     border-radius: 5px;
+    resize: vertical;
+    width: 200%;
+    height: 200px;
 }

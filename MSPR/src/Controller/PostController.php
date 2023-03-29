@@ -45,8 +45,8 @@ class PostController extends AbstractController
             $plant = new Plant();
             $plant->setLabel($_POST['plant']);
             $plant->setImage($newFileName);
-            $em->persist($plant);
             $post->setPlantId($plant);
+            $em->persist($plant);
             $em->persist($post);
             $em->flush();
         }

@@ -2,7 +2,7 @@
 {% block body %}
     <link rel="stylesheet" href="{{ asset('assets/css/postForm.css') }}">
     <div id="card">
-        <form action="{{ path('app_main') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ path('app_new_post') }}" method="post" enctype="multipart/form-data">
             <label for="title">Titre : </label>
             <input type="text" name="title" id="title">
             <br>

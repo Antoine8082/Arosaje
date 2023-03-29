@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Plant;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -41,6 +42,11 @@ class PostController extends AbstractController
         $post->setTitle($_POST['title']);
         $post->setUserPost($this->getUser());
         $post->setImage($newFileName);
+        $plant = new Plant();
+        $plant->setLabel($_POST['plant']);
+        $plant->setImage($newFileName);
+        $em->persist($plant);
+        $post->setPlantId($plant);
         $em->persist($post);
         $em->flush();
     }

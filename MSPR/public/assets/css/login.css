@@ -1,3 +1,7 @@
+* {
+    font-family: "Roboto", sans-serif;
+}
+
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:700&display=swap");
 body{
     height: 0 !important;

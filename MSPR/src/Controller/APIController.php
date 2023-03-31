@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comments;
+use App\Repository\CommentsRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,12 +66,15 @@ class APIController extends AbstractController
         }
     }
     #[Route('/api/deleteCommentByPost', name : 'app_api_delete_comments_by_post')]
-    function deleteCommentByPost(Request $request, PostRepository $pr){
+    function deleteCommentByPost(Request $request, PostRepository $pr, CommentsRepository $cr, EntityManagerInterface $em){
         if($request->getMethod() == "POST"){
             try{
                 $data = json_decode($request->getContent(),true);
                 $post = $pr->find($data['post']);
-                return new JsonResponse(json_encode($post));
+                $comment = $cr->findOneBy(['post'=>$post]);
+                $post->removeComment($comment);
+                $em->flush();
+                return new JsonResponse(true);
             }catch (\Exception $e){
                 return new JsonResponse(false);
             }

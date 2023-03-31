@@ -37,7 +37,7 @@
             {% for comment in post.comments %}
 
             <div class="comment-card post_{{ i }}">
-                <span class="delete_com id_{{ comment.id }}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M21 5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5zm-4.793 9.793-1.414 1.414L12 13.414l-2.793 2.793-1.414-1.414L10.586 12 7.793 9.207l1.414-1.414L12 10.586l2.793-2.793 1.414 1.414L13.414 12l2.793 2.793z"></path></svg></span>
+                <span class="delete_com id_{{ comment.id }} post_comment_{{ i }}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M21 5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5zm-4.793 9.793-1.414 1.414L12 13.414l-2.793 2.793-1.414-1.414L10.586 12 7.793 9.207l1.414-1.414L12 10.586l2.793-2.793 1.414 1.414L13.414 12l2.793 2.793z"></path></svg></span>
                 <div class="author" id="card_author">{{ comment.userComment.email }}
                     <span class="dateSend" id="card_date">{{ comment.sendDate|date }}</span>
                 </div>
@@ -60,13 +60,17 @@
         const inputGuard = document.querySelector('#guardian')
         const btnComment = document.querySelector('#btn-comment');
         const deleteCom = document.querySelectorAll('.delete_com')
-        deleteCom.forEach(element => {
-          element.addEventListener('click', (e) => {
-              const idCom = e.currentTarget.classList[1].split('_')[1]
-              //e.currentTarget.parentElement.remove()
-              deleteComment(idCom);
-          })
-        })
+
+        updateComsArea()
+        function updateComsArea(){
+            deleteCom.forEach(element => {
+                element.addEventListener('click', (e) => {
+                    const idCom = e.currentTarget.classList[1].split('_')[1]
+                    e.currentTarget.parentElement.remove()
+                    deleteComment(idCom);
+                })
+            })
+        }
         btnComment.addEventListener('click', () => {
             sendComment();
         })
@@ -150,7 +154,7 @@
             author.textContent += "{{ app.user.email }}";
             date.textContent += new Date().toLocaleString();
             content.textContent = contentComment;
-            box.classList.add('post_{{ i + 1 }}')
+            box.classList.add('post_'+ {{ i }})
             document.querySelector('#comments-container').appendChild(clone);
         }
 

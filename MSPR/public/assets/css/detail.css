@@ -25,9 +25,20 @@
     margin : 10px;
     width: 400px;
     height: fit-content;
+    position: relative;
 }
-.comment-card:hover{
-    transform : scale(1.1);
+.delete_com{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.delete_com>svg>path{
+    transition: .5s;
+    border-radius: 10px;
+}
+.delete_com>svg>path:hover{
+    fill: red;
+    transform: scale(1.1);
 }
 @keyframes append-animate {
     from {

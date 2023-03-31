@@ -32,24 +32,24 @@ class PostController extends AbstractController
     public function addPost(EntityManagerInterface $em,Request $request): Response
     {
         if($request->getMethod() == "POST"){
-        $post = new Post();
-        $uploadFile = $request->files->get('img');
-        $originalFileName = pathinfo($uploadFile->getClientOriginalName(),PATHINFO_FILENAME);
-        $safeFileName = preg_replace('/[^a-zA-Z0-9]/','_',$originalFileName);
-        $newFileName = $safeFileName . '-'. uniqid() . '.' . $uploadFile->guessExtension();
-        $uploadFile->move($this->getParameter('images_directory'),$newFileName);
-        $post->setDescription($_POST['description']);
-        $post->setTitle($_POST['title']);
-        $post->setUserPost($this->getUser());
-        $post->setImage($newFileName);
-        $plant = new Plant();
-        $plant->setLabel($_POST['plant']);
-        $plant->setImage($newFileName);
-        $em->persist($plant);
-        $post->setPlantId($plant);
-        $em->persist($post);
-        $em->flush();
-    }
+            $post = new Post();
+            $uploadFile = $request->files->get('img');
+            $originalFileName = pathinfo($uploadFile->getClientOriginalName(),PATHINFO_FILENAME);
+            $safeFileName = preg_replace('/[^a-zA-Z0-9]/','_',$originalFileName);
+            $newFileName = $safeFileName . '-'. uniqid() . '.' . $uploadFile->guessExtension();
+            $uploadFile->move($this->getParameter('images_directory'),$newFileName);
+            $post->setDescription($_POST['description']);
+            $post->setTitle($_POST['title']);
+            $post->setUserPost($this->getUser());
+            $post->setImage($newFileName);
+            $plant = new Plant();
+            $plant->setLabel($_POST['plant']);
+            $plant->setImage($newFileName);
+            $post->setPlantId($plant);
+            $em->persist($plant);
+            $em->persist($post);
+            $em->flush();
+        }
 
         return $this->render('post/form.html.twig');
 

@@ -14,9 +14,12 @@
         {{ encore_entry_script_tags('app') }}
     {% endblock %}
 </head>
+
 <body>
 <nav class="navbar">
-    <img class="logo" src='{{ asset('assets/img/arosajeLogoLight.png') }}' alt="logo">
+    <a class="logo-homeLink" href="{{ path('app_main') }}">
+    <img class="logo" src='{{ asset('assets/img/arosaje_Logo.PNG') }}' alt="logo">
+    </a>
     <ul class="nav-list">
         {% if app.request.attributes.get('_route') != "app_main" %}
             <li class="nav-item"><a href="/">Accueil</a></li>
@@ -29,7 +32,7 @@
         {% endif %}
 
         {% if app.user  and app.request.attributes.get('_route') != "app_profile" %}
-            <li class="nav-item" style="margin-left: 12%"><a href="{{ path('app_profile') }}">Profile</a></li>
+            <li class="nav-item" style="margin-left: 12%"><a href="{{ path('app_profile') }}">Mes_Demandes</a></li>
         {% endif %}
         {% if app.user %}
             <li class="nav-item" style="margin-left: 12%"><a href="{{ path('app_logout') }}">Déconnexion</a></li>
@@ -41,4 +44,5 @@
 
 {% endblock %}
 </body>
+
 </html>

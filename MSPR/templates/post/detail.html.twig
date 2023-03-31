@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/detail.css') }}">
 {% endblock %}
 {% block body %}
+
     <div class="container-detail">
         <h2>{{ post.title|capitalize }}</h2>
         {% if app.user.id == post.userPost.id %}
@@ -32,22 +33,25 @@
         </textarea>
         <button id="btn-comment">Envoyer</button>
         <div id="comments-container">
+            {% set i = 0 %}
             {% for comment in post.comments %}
-            <div class="comment-card {% if comment.type == "BOT" %}{% endif %}">
-                <span id="delete_com"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M21 5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5zm-4.793 9.793-1.414 1.414L12 13.414l-2.793 2.793-1.414-1.414L10.586 12 7.793 9.207l1.414-1.414L12 10.586l2.793-2.793 1.414 1.414L13.414 12l2.793 2.793z"></path></svg></span>
+
+            <div class="comment-card post_{{ i }}">
+                <span class="delete_com id_{{ comment.id }}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M21 5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5zm-4.793 9.793-1.414 1.414L12 13.414l-2.793 2.793-1.414-1.414L10.586 12 7.793 9.207l1.414-1.414L12 10.586l2.793-2.793 1.414 1.414L13.414 12l2.793 2.793z"></path></svg></span>
                 <div class="author" id="card_author">{{ comment.userComment.email }}
                     <span class="dateSend" id="card_date">{{ comment.sendDate|date }}</span>
                 </div>
                 <br>
                 <div class="comment-content" id="card_content">{{ comment.content }}</div>
             </div>
+                {% set i = i + 1 %}
                 {% endfor %}
         </div>
     </section>
     <template id="comment-area">
         <div class="comment-card">
-
             <div class="author" id="card_author"><span class="dateSend" id="card_date"></span></div>
+            <span class="delete_com"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M21 5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5zm-4.793 9.793-1.414 1.414L12 13.414l-2.793 2.793-1.414-1.414L10.586 12 7.793 9.207l1.414-1.414L12 10.586l2.793-2.793 1.414 1.414L13.414 12l2.793 2.793z"></path></svg></span>
             <br>
             <div class="comment-content" id="card_content"></div>
         </div>
@@ -55,6 +59,14 @@
     <script>
         const inputGuard = document.querySelector('#guardian')
         const btnComment = document.querySelector('#btn-comment');
+        const deleteCom = document.querySelectorAll('.delete_com')
+        deleteCom.forEach(element => {
+          element.addEventListener('click', (e) => {
+              const idCom = e.currentTarget.classList[1].split('_')[1]
+              //e.currentTarget.parentElement.remove()
+              deleteComment(idCom);
+          })
+        })
         btnComment.addEventListener('click', () => {
             sendComment();
         })
@@ -63,7 +75,18 @@
                 setGuardian(inputGuard.value)
             }
         });
-
+        function deleteComment(id){
+            const opts = {
+                method: "POST",
+                body: JSON.stringify({
+                        post: {{ post.id }},
+                        comment_id: id
+                    }
+                )};
+            fetch('/api/deleteCommentByPost',opts)
+                .then((res) => res.json())
+                .then((res) => console.log(res))
+        }
         function setGuardian(inputGuardVal) {
             const opts = {
                 method: "POST",
@@ -76,7 +99,7 @@
                 .then((res) => res.json())
                 .then((res) => {
                     const txt = document.querySelector('#res_fetch_guardian');
-                    if (res.true) {
+                    if (res) {
                         txt.textContent = "Success !"
                         txt.classList.add('success')
                         txt.classList.remove('error')
@@ -85,6 +108,7 @@
                         txt.classList.add('error')
                         txt.classList.remove('success')
                     }
+
                 });
         }
 
@@ -102,6 +126,7 @@
                 .then(res => res.json())
                 .then(res => {
                     buildCommentPart()
+                    document.querySelector('#comment').value = ""
                 })
         }
 
@@ -125,7 +150,10 @@
             author.textContent += "{{ app.user.email }}";
             date.textContent += new Date().toLocaleString();
             content.textContent = contentComment;
+            box.classList.add('post_{{ i + 1 }}')
             document.querySelector('#comments-container').appendChild(clone);
         }
+
     </script>
+
 {% endblock %}

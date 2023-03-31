@@ -2,7 +2,7 @@
 
 {% block body %}
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
-    <h3 style="text-align: center">Liste demandes</h3>
+    <h2 style="text-align: center">Liste demandes :</h2>
     <div class="container-cards">
         {% for post in posts %}
             {% set imagePath = '/uploads/images/' ~ post.image %}
@@ -10,7 +10,7 @@
                     <div class="card-content">
                         <h3>{{ post.title|capitalize }}</h3>
                         <p>{{ post.description }}</p>
-                        <p>{{ post.userPost.email }}</p>
+                        <p>Auteur : {{ post.userPost.email }}</p>
                     </div>
                     <div class="image">
                         <img src="{{ imagePath }}" alt="" id="img_card">

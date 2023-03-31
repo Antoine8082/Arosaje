@@ -1,13 +1,37 @@
+* {
+    font-family: "Roboto", sans-serif;
+}
+body {
+    background-image: url('../img/Arosaje_wallpaper.png');
+    background-repeat: repeat-y;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+    position: relative;
+    z-index: -1;
+ }
+
 .navbar{
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 30px;
-}
-.nav-list{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 50px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    width: 80%;
+    height: 100px;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+    justify-content: space-between;
+    padding-right: 50px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.nav-list {
+    display: flex;
+    justify-content: right;
     align-items: center;
 }
+
 .nav-item{
     position: relative;
     list-style: none;
@@ -31,8 +55,13 @@
     left: 0;
 }
 .logo{
-    height: 5%;
-    width: 5%;
+    width: 100%;
+    margin-left: 10px;
+}
+.logo-homeLink {
+    display: inline-block;
+    width: 150px;
+    height: 80px;
 }
 .input{
     border-style: solid;

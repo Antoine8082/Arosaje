@@ -64,4 +64,16 @@ class APIController extends AbstractController
             }
         }
     }
+    #[Route('/api/deleteCommentByPost', name : 'app_api_delete_comments_by_post')]
+    function deleteCommentByPost(Request $request, PostRepository $pr){
+        if($request->getMethod() == "POST"){
+            try{
+                $data = json_decode($request->getContent(),true);
+                $post = $pr->find($data['post']);
+                return new JsonResponse(json_encode($post));
+            }catch (\Exception $e){
+                return new JsonResponse(false);
+            }
+        }
+    }
 }

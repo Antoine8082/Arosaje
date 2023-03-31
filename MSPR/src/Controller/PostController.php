@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     #[Route('/posts/{id}', name: 'app_post_detail')]
-    public function detail(Post $post,Request $request,EntityManagerInterface $em): Response
+    public function detail(Post $post,Request $request,EntityManagerInterface $em, UserRepository $ur): Response
     {
         if($request->getMethod() == "POST") {
             $ur = $em->getRepository(User::class);
@@ -26,6 +26,7 @@ class PostController extends AbstractController
         }
         return $this->render('post/detail.html.twig', [
             'post' => $post,
+            'users' => $ur->findAll()
         ]);
     }
     #[Route('/newpost', name: 'app_new_post')]

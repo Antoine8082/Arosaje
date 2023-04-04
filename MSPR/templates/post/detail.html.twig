@@ -4,9 +4,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/detail.css') }}">
 {% endblock %}
 {% block body %}
-
+    <h2 style="text-align: center">{{ post.title|capitalize }}</h2>
     <div class="container-detail">
-        <h2>{{ post.title|capitalize }}</h2>
         {% if app.user.id == post.userPost.id %}
             <label for="guardian">Gardien :</label>
             {% if not post.guardian %}
@@ -14,12 +13,14 @@
                     <input id="input_search"  type="text" value="">
                     <div class="results">
                         {% for user in users %}
-                            <a class="option" onclick="setGuardian(this)">{{user.email}}</a>
+                            <span class="option" onclick="setGuardian(this)">{{user.email}}</span>
                         {% endfor %}
                     </div>
                 </div>
             {% else %}
-                <input type="text" id="input_search">
+                <h4>
+                    {{ post.guardian.email }}
+                </h4>
             {% endif %}
         {% else %}
             {% if post.guardian is not empty %}

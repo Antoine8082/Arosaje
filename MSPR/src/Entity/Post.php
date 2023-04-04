@@ -28,11 +28,10 @@ class Post
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comments::class, orphanRemoval: true)]
     private Collection $comments;
 
-    #[ORM\ManyToOne(inversedBy: 'post')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user_post = null;
 
-    #[ORM\ManyToOne(inversedBy: 'guarded_posts')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'guarded_posts')]
     private ?User $guardian = null;
 
     #[ORM\Column(type: "string")]

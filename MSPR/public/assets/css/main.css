@@ -39,3 +39,7 @@
     justify-content: center;
     flex-wrap: wrap;
 }
+#img_card{
+    width: 200px;
+    height:fit-content;
+}

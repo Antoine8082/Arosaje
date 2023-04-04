@@ -12,6 +12,8 @@
             <label for="plant">Plante : </label>
             <input type="text" name="plant" id="plant">
             <br>
+            <input type="text" name="latitude" hidden>
+            <input type="text" name="longitude" hidden>
             <label for="image">Photo : </label>
             <input type="file" name="img" id="image" accept=".jpg,.jpeg,.png">
             <br>
@@ -24,4 +26,13 @@
             <button type="submit">Envoyer</button>
         </form>
     </div>
+    <script>
+        window.navigator.geolocation.getCurrentPosition(function (position) {
+            document.querySelector('input[name="latitude"]').value = position.coords.latitude;
+            document.querySelector('input[name="longitude"]').value = position.coords.longitude;
+        });
+    </script>
+{% endblock %}
+{% block js %}
+
 {% endblock %}

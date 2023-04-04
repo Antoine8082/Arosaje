@@ -20,7 +20,8 @@ class MainController extends AbstractController
         }
         $pr = $em->getRepository(Post::class);
         return $this->render('main/index.html.twig', [
-            'posts' => $pr->findAll()
+            'posts' => $pr->findAll(),
+            'user' =>  $this->getUser()
         ]);
     }
 

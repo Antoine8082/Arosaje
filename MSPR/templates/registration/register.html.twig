@@ -10,7 +10,8 @@
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    {{ form_row(registrationForm.agreeTerms) }}
+    <a href="{{ path('app_agree_terms') }}">read terms</a>
 
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}

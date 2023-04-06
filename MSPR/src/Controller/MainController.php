@@ -33,5 +33,10 @@ class MainController extends AbstractController
             ]
         );
     }
-
+    #[Route('/cgu', name: 'app_agree_terms')]
+    public function agreeTerms(EntityManagerInterface $em, Request $request): Response
+    {
+        return $this->render('main/cgu.html.twig', [
+        ]);
+    }
 }

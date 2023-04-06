@@ -7,17 +7,10 @@
 {% block body %}
     <h2 style="text-align: center">{{ post.title|capitalize }}</h2>
     <div class="container-detail">
-        {% if app.user.id == post.userPost %}
+        {% if app.user == post.userPost %}
             <label for="guardian">Gardien :</label>
             {% if not post.guardian %}
-                <div class="search_user">
-                    <input id="input_search"  type="text" value="">
-                    <div class="results">
-                        {% for user in users %}
-                            <span class="option" onclick="setGuardian(this)">{{user.email}}</span>
-                        {% endfor %}
-                    </div>
-                </div>
+                {{ form(guardianForm) }}
             {% else %}
                 <h4>
                     {{ post.guardian.email }}

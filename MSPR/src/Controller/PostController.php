@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Plant;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Form\GuardianFormType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,11 +17,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     #[Route('/posts/{id}', name: 'app_post_detail')]
-    public function detail(Post $post,Request $request,EntityManagerInterface $em, UserRepository $ur): Response
+    public function detail(Post $post,Request $request,EntityManagerInterface $em, UserRepository $ur,ManagerRegistry $doctrine): Response
     {
+        $form = $this->createForm(GuardianFormType::class, $post);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            $this->addFlash('message', 'Gardien ajouté avec succès');
+        }
         return $this->render('post/detail.html.twig', [
             'post' => $post,
-            'users' => $ur->findAll()
+            'users' => $ur->findAll(),
+            'guardianForm' => $form->createView(),
         ]);
     }
     #[Route('/newpost', name: 'app_new_post')]

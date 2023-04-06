@@ -28,7 +28,8 @@ class MainController extends AbstractController
     #[Route('/profile', name: 'app_profile')]
     public function profile(): Response
     {
-        return $this->render('profile/index.html.twig',['posts'=> $this->getUser()->getPost(),
+        return $this->render('profile/index.html.twig',[
+            'posts'=> $this->getUser()->getPost(),
             'guardedPosts'=>$this->getUser()->getGuardedPosts()
             ]
         );

@@ -10,7 +10,11 @@
                     <div class="card-content">
                         <h3>{{ post.title|capitalize }}</h3>
                         <p>{{ post.description }}</p>
-                        <p>Auteur : {{ post.userPost.email }}</p>
+                        <p>Auteur : {% if post.userPost %}
+                                {{ post.userPost.email }}
+                                {% else %}
+                                Anonyme
+                            {% endif %}</p>
                     </div>
                     <div class="image">
                         <img src="{{ imagePath }}" alt="" id="img_card">

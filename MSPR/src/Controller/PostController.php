@@ -17,13 +17,6 @@ class PostController extends AbstractController
     #[Route('/posts/{id}', name: 'app_post_detail')]
     public function detail(Post $post,Request $request,EntityManagerInterface $em, UserRepository $ur): Response
     {
-        if($request->getMethod() == "POST") {
-            $ur = $em->getRepository(User::class);
-            $user = $ur->findOneBy($_POST['guardian']);
-            $user->addGuardedPost($post);
-            $em->persist($user);
-            $em->flush();
-        }
         return $this->render('post/detail.html.twig', [
             'post' => $post,
             'users' => $ur->findAll()

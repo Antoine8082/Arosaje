@@ -3,10 +3,11 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/css/detail.css') }}">
 {% endblock %}
+
 {% block body %}
     <h2 style="text-align: center">{{ post.title|capitalize }}</h2>
     <div class="container-detail">
-        {% if app.user.id == post.userPost.id %}
+        {% if post.userPost is not null and app.user.id == post.userPost.id %}
             <label for="guardian">Gardien :</label>
             {% if not post.guardian %}
                 <div class="search_user">

@@ -9,9 +9,9 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{#    <h1>Bonjour {{ controller_name }}! ✅</h1>#}
     {% include 'admin/users.html.twig' %}
     <br>
-    <a href="{{ path('admin_add_plant') }}">Ajouter une plante</a>
+    <a class="blue", href="{{ path('admin_add_plant') }}">Ajouter une plante</a>
 </div>
 {% endblock %}

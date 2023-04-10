@@ -20,3 +20,14 @@ th.col-actions,
 td.col-actions {
     width: 20%;
 }
+.blue {
+    color: blue;
+}
+h1, form {
+    max-width: 800px;
+    width: 100%;
+    padding: 0 15px;
+    display: flex;
+    justify-content: center;
+
+}

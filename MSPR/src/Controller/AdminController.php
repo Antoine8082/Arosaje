@@ -52,7 +52,7 @@ class AdminController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('message', 'Utilisateur modifié avec succès');
-            return $this->redirectToRoute('admin_users');
+            return $this->redirectToRoute('admin_app_admin');
         }
 
         return $this->render('admin/edituser.html.twig', [

@@ -1,0 +1,22 @@
+
+th,
+td {
+    text-align: center;
+}
+
+th.col-id,
+td.col-id {
+    width: 10%;
+}
+th.col-email,
+td.col-email {
+    width: 20%;
+}
+th.col-roles,
+td.col-roles {
+    width: 20%;
+}
+th.col-actions,
+td.col-actions {
+    width: 20%;
+}

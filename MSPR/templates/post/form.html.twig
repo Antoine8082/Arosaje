@@ -2,7 +2,21 @@
 {% block body %}
     <link rel="stylesheet" href="{{ asset('assets/css/postForm.css') }}">
     <div id="card">
-        {{ form(postForm) }}
+        {{ form_start(postForm) }}
+
+        {{ form_row(postForm.title,{ 'label': 'Titre : ' }) }}
+        <br>
+        {{ form_row(postForm.description,{ 'label': 'Description : ' }) }}
+        <br>
+        {{ form_row(postForm.plantId,{ 'label': 'Plante : ' }) }}
+        <br>
+        {{ form_row(postForm.image,{ 'label': 'Photo : '}) }}
+        <br>
+        <div class = "validateButton">
+        {{ form_row(postForm.valider) }}
+        </div>
+
+        {{ form_end(postForm) }}
         {#  <form action="{{ path('app_new_post') }}" method="post" enctype="multipart/form-data">
             <label for="title">Titre : </label>
             <input type="text" name="title" id="title">

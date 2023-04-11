@@ -2,7 +2,8 @@
 {% block body %}
     <link rel="stylesheet" href="{{ asset('assets/css/postForm.css') }}">
     <div id="card">
-        <form action="{{ path('app_new_post') }}" method="post" enctype="multipart/form-data">
+        {{ form(postForm) }}
+        {#  <form action="{{ path('app_new_post') }}" method="post" enctype="multipart/form-data">
             <label for="title">Titre : </label>
             <input type="text" name="title" id="title">
             <br>
@@ -22,9 +23,9 @@
             {% for plant in plants %}
                 <a class="option">{{plant.label}}</a>
             {% endfor %}
-        </div>#}
+        </div>
             <button type="submit">Envoyer</button>
-        </form>
+        </form>#}
     </div>
     <script>
         window.navigator.geolocation.getCurrentPosition(function (position) {

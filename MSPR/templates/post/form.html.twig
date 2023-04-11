@@ -4,11 +4,14 @@
     <div id="card">
         {{ form_start(postForm) }}
 
-        {{ form_row(postForm.title,{ 'label': 'Titre : ' }) }}
+        {{ form_row(postForm.title,{ 'label': 'Titre : '}) }}
         <br>
-        {{ form_row(postForm.description,{ 'label': 'Description : ' }) }}
+{#        {{ form_row(postForm.description,{ 'label': 'Description : '}) }}#}
+        {{ form_label(postForm.description, 'Description : ') }}
+        {{ form_widget(postForm.description, {'attr': {'class': 'form-control', 'rows': '5'}}) }}
+        {{ form_errors(postForm.description) }}
         <br>
-        {{ form_row(postForm.plantId,{ 'label': 'Plante : ' }) }}
+        {{ form_row(postForm.plantId,{ 'label': 'Plante : '}) }}
         <br>
         {{ form_row(postForm.image,{ 'label': 'Photo : '}) }}
         <br>

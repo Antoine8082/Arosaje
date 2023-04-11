@@ -8,9 +8,16 @@
     <h2 style="text-align: center">{{ post.title|capitalize }}</h2>
     <div class="container-detail">
         {% if app.user == post.userPost %}
-            <label for="guardian">Gardien :</label>
             {% if not post.guardian %}
-                {{ form(guardianForm) }}
+                {{ form_start(guardianForm) }}
+                <div>
+                    {{ form_row(guardianForm.guardian,{ 'label': 'Gardien : ' }) }}
+                </div>
+                <div>
+                    {{ form_row(guardianForm.valider)}}
+                </div>
+
+                {{ form_end(guardianForm) }}
             {% else %}
                 <h4>
                     {{ post.guardian.email }}

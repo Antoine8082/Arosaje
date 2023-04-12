@@ -2,8 +2,14 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/css/detail.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <style type="text/css">
+    </style>
 {% endblock %}
-
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+{% endblock %}
 {% block body %}
     <h2 style="text-align: center">{{ post.title|capitalize }}</h2>
     <div class="container-detail">
@@ -31,8 +37,15 @@
         <span id="res_fetch_guardian"></span>
         {% set imagePath = '/uploads/images/' ~ post.image %}
         <p>{{ post.description }}</p>
-        <div class="image">
-            <img src="{{ imagePath }}" alt="" id="img_card">
+        <div class="img-containers" style="display: flex">
+            <div class="image" style="height: 400px; width: 400px;">
+                <img src="{{ imagePath }}" alt="" id="img_card" style="height: 400px; width: 400px; margin-right: 10px">
+            </div>
+            <div class="map-container">
+                <div id="map" style="height: 400px; width: 400px;">
+                    <!-- Ici s'affichera la carte -->
+                </div>
+            </div>
         </div>
         <div>
             {{ post.plantId.label }}
@@ -48,11 +61,7 @@
         {% endif %}
     </div>
     <section>
-        <h3>Espace commentaire</h3>
-        <textarea id="comment" name="comment"
-                  rows="5" cols="33">
-        </textarea>
-        <button id="btn-comment">Envoyer</button>
+
         <div id="comments-container">
             {% set i = 0 %}
             {% for comment in post.comments %}
@@ -68,7 +77,14 @@
                 {% set i = i + 1 %}
                 {% endfor %}
         </div>
+        <h3>Espace commentaire</h3>
+        <textarea id="comment" name="comment"
+                  rows="5" cols="33">
+        </textarea>
+        <button id="btn-comment">Envoyer</button>
     </section>
+    <input type="text" hidden id="post_lat" value="{{ post.latitude }}">
+    <input type="text" hidden id="post_long" value="{{ post.longitude }}">
     <template id="comment-area">
         <div class="comment-card">
             <div class="author" id="card_author"><span class="dateSend" id="card_date"></span></div>
@@ -175,31 +191,26 @@
             box.classList.add('post_'+ {{ i }})
             document.querySelector('#comments-container').appendChild(clone);
         }
-        const input = document.querySelector('#input_search')
-
-        /**
-         * add event listener on the input search to sort the select items with query
-         */
-        let elmts = ['click', 'keyup']
-
-        elmts.forEach( evt =>
-            input.addEventListener(evt, ()=> {
-                const value = input.value.toUpperCase();
-                const opt = document.querySelectorAll('.option')
-                if(value.length >= 3){
-                    for( i = 0; i < opt.length; i++){
-                        let txtValue = opt[i].textContent || opt[i].innerText;
-                        document.querySelector('.results').classList.add('active')
-                        if (txtValue.toUpperCase().indexOf(value)> -1){
-                            opt[i].style.display = "";
-                        }else{
-                            opt[i].style.display = "none"
-                        }
-                    }
-                }
-
-            })
-        )
     </script>
+     <script>
+         document.addEventListener("DOMContentLoaded", function(event) {
+             // On initialise la latitude et la longitude de Paris (centre de la carte)
+             initMap()
+         });
+        function initMap() {
+            console.log(document.getElementById('post_long').value)
+            console.log(document.getElementById('post_lat').value)
+            // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
+            macarte = L.map('map').setView([document.getElementById('post_lat').value, document.getElementById('post_long').value], 11);
+            // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(macarte);
+            var marker = L.marker([document.getElementById('post_lat').value, document.getElementById('post_long').value]).addTo(macarte);
+        }
+    </script>
+    {% block js %}
 
+    {% endblock %}
 {% endblock %}

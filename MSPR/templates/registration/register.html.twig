@@ -21,10 +21,30 @@
             <a href="{{ path('app_agree_terms') }}">CGU : cliquez ici</a>
             </div>
             <br>
-            <button type="submit" class="btn">Enregistrement</button>
+            <button type="submit" id="submit-button" class="btn">Enregistrement</button>
 
             {{ form_end(registrationForm) }}
 
         </div>
     </div>
+
+    <script>
+        // Récupération de la case à cocher des CGU et du bouton de soumission
+        const cguCheckbox = document.getElementById('registration_form_agreeTerms');
+        const submitButton = document.getElementById('submit-button');
+
+        // Désactivation du bouton de soumission par défaut
+        submitButton.disabled = true;
+
+        // Écouteur d'événement pour la case des CGU
+        cguCheckbox.addEventListener('change', function() {
+            // Activation ou désactivation du bouton de soumission en fonction de l'état de la case des CGU
+            if (cguCheckbox.checked) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        });
+
+    </script>
 {% endblock %}

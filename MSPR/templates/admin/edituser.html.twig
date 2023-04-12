@@ -1,9 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier un utilisateur{% endblock %}
+{#{% block title %}Modifier un utilisateur{% endblock %}#}
 
 {% block body %}
+
     <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
     <h1>Modifier un utilisateur</h1>
-    {{ form(userForm) }}
+
+    <div id="card">
+        {{ form_start(userForm) }}
+
+        {{ form_row(userForm.email, { 'label': 'Email : ' }) }}
+        <br>
+        {{ form_row(userForm.roles, { 'label': 'Rôle : ' }) }}
+        <br>
+        {{ form_row(userForm.valider, { 'label': 'Valider' }) }}
+        <br>
+        {{ form_end(userForm) }}
+    </div>
+
 {% endblock %}

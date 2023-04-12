@@ -3,16 +3,28 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-    {{ form_row(registrationForm.agreeTerms) }}
-    <a href="{{ path('app_agree_terms') }}">read terms</a>
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+    <h1>Enregistrement :</h1>
+    <div id="card">
+        <div class="register">
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+            {{ form_start(registrationForm) }}
+
+            {{ form_row(registrationForm.email,{ 'label': 'Email : '}) }}
+            <br>
+            {{ form_row(registrationForm.plainPassword, { 'label': 'Mot de passe : ' }) }}
+            <br>
+            {{ form_row(registrationForm.agreeTerms, { 'label': 'Acceptation des CGU : ' }) }}
+            <br>
+            <div class = "CGUlink">
+            <a href="{{ path('app_agree_terms') }}">CGU : cliquez ici</a>
+            </div>
+            <br>
+            <button type="submit" class="btn">Enregistrement</button>
+
+            {{ form_end(registrationForm) }}
+
+        </div>
+    </div>
 {% endblock %}

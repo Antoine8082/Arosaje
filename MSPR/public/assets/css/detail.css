@@ -39,6 +39,7 @@
 }
 .delete_com>svg>path:hover{
     fill: red;
+    cursor: pointer;
     transform: scale(1.1);
 }
 @keyframes append-animate {

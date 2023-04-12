@@ -19,11 +19,14 @@ class Plant
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $label = null;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $image = null;
+    #[ORM\Column( nullable: true)]
+    private ?string $image = null;
 
     #[ORM\OneToMany(mappedBy: 'plantId', targetEntity: Post::class, orphanRemoval: true)]
     private Collection $posts;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $advice = null;
 
     public function __construct()
     {
@@ -85,6 +88,18 @@ class Plant
                 $post->setPlantId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAdvice(): ?string
+    {
+        return $this->advice;
+    }
+
+    public function setAdvice(string $advice): self
+    {
+        $this->advice = $advice;
 
         return $this;
     }

@@ -18,13 +18,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     #[Route('/posts/{id}', name: 'app_post_detail')]
-    public function detail(Post $post,Request $request,EntityManagerInterface $em, UserRepository $ur,ManagerRegistry $doctrine): Response
+    public function detail(Post $post,Request $request, UserRepository $ur,ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(GuardianFormType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
+            $post->setIsHeld(true);
             $entityManager->persist($post);
             $entityManager->flush();
 
@@ -56,7 +57,6 @@ class PostController extends AbstractController
             }
             $post->setImage($newFileName);
             $post->setUserPost($user);
-            $post->setIsHeld(true);
             $em = $doctrine->getManager();
             $em->persist($post);
             $em->flush();

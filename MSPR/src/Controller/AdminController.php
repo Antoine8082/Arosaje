@@ -73,6 +73,7 @@ class AdminController extends AbstractController
             $safeFileName = preg_replace('/[^a-zA-Z0-9]/','_',$originalFileName);
             $newFileName = $safeFileName . '-'. uniqid() . '.' . $file->guessExtension();
             $file->move($this->getParameter('images_directory'), $newFileName);
+            $plant->setImage($newFileName);
             $entityManager = $doctrine->getManager();
             $entityManager->persist($plant);
             $entityManager->flush();

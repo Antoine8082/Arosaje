@@ -1,0 +1,32 @@
+{% block body %}
+<h1>Liste des plantss</h1>
+<table>
+    <thead>
+    <th class="col-id">ID</th>
+    <th class="col-label">Label</th>
+    <th class="col-image">Image</th>
+    <th class="col-conseil">Conseil</th>
+    <th class="col-actions">Actions</th>
+    </thead>
+    <tbody>
+    {# On boucle sur les utilisateurs #}
+    {% for plant in plants %}
+        {% set imagePath = '/uploads/images/' ~ plant.image %}
+        <tr>
+            <td>{{ plant.id }}</td>
+            <td>{{ plant.label }}</td>
+            <td>
+                <img src="{{ imagePath }}" alt="plant" style="width: 50px; height: 50px">
+            </td>
+            <td>
+                {{ plant.advice }}
+            </td>
+            <td><a class="blue" href="{{ path('conseil_modifier_plant', {'id': plant.id}) }}">Modifier</a></td>
+        </tr>
+
+    {% else %}
+        <p>Aucune plante enregistrée</p>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -42,6 +42,12 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private ?Plant $plantId = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $latitude = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $longitude = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -161,6 +167,30 @@ class Post
     public function setPlantId(?Plant $plantId): self
     {
         $this->plantId = $plantId;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?string $longitude): self
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }

@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Plant;
+use App\Form\EditPlantFormType;
 use App\Repository\PlantRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,20 +39,30 @@ class PlantController extends AbstractController
 
     public function editPlant(Plant $plant, Request $request, ManagerRegistry $doctrine)
     {
-        $form = $this->createForm(EditUserType::class, $user);
+
+        $form = $this->createForm(EditPlantFormType::class, $plant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
-            $entityManager->persist($user);
+            if($form['image']){
+                $file = $form['image']->getData();
+                $originalFileName = pathinfo($file->getClientOriginalName(),PATHINFO_FILENAME);
+                $safeFileName = preg_replace('/[^a-zA-Z0-9]/','_',$originalFileName);
+                $newFileName = $safeFileName . '-'. uniqid() . '.' . $file->guessExtension();
+                $file->move($this->getParameter('images_directory'), $newFileName);
+                $plant->setImage($newFileName);
+            }
+            $entityManager->persist($plant);
             $entityManager->flush();
 
-            $this->addFlash('message', 'Utilisateur modifié avec succès');
-            return $this->redirectToRoute('admin_app_admin');
+            $this->addFlash('message', 'plante modifiée avec succès');
+            return $this->redirectToRoute('conseil_app_plant');
         }
 
-        return $this->render('admin/edituser.html.twig', [
-            'userForm' => $form->createView(),
+        return $this->render('plant/editplant.html.twig', [
+            'plantForm' => $form->createView(),
+            'plant' => $plant,
         ]);
     }
 }

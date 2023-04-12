@@ -19,7 +19,7 @@ class Plant
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $label = null;
 
-    #[ORM\Column( nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?string $image = null;
 
     #[ORM\OneToMany(mappedBy: 'plantId', targetEntity: Post::class, orphanRemoval: true)]

@@ -1,16 +1,21 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('assets/css/plant.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
 {% endblock %}
 {% block title %}Modifier une plante{% endblock %}
 
 {% block body %}
     {% set imagePath = '/uploads/images/' ~ plant.image %}
     <h1>Modifier une plante</h1>
+    <div id="card">
     {{ form_start(plantForm) }}
-    {{ form_row(plantForm.label) }}
-    {{ form_row(plantForm.advice) }}
+    {{ form_row(plantForm.label, { 'label': 'Espèce/Type : ' }) }}
+        <br>
+    {{ form_row(plantForm.advice, { 'label': 'Conseil : ' }) }}
     <img src="{{ imagePath }}" alt="plant" style="width: 50px; height: 50px">
+        <br>
     {{ form_row(plantForm.valider) }}
+        <br>
     {{ form_end(plantForm) }}
+    </div>
 {% endblock %}

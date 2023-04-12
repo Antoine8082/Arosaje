@@ -8,6 +8,8 @@
         <br>
 {#        {{ form_row(postForm.description,{ 'label': 'Description : '}) }}#}
         {{ form_label(postForm.description, 'Description : ') }}
+        <input type="text" name="latitude" hidden>
+        <input type="text" name="longitude" hidden>
         {{ form_widget(postForm.description, {'attr': {'class': 'form-control', 'rows': '5'}}) }}
         {{ form_errors(postForm.description) }}
         <br>
@@ -30,8 +32,7 @@
             <label for="plant">Plante : </label>
             <input type="text" name="plant" id="plant">
             <br>
-            <input type="text" name="latitude" hidden>
-            <input type="text" name="longitude" hidden>
+
             <label for="image">Photo : </label>
             <input type="file" name="img" id="image" accept=".jpg,.jpeg,.png">
             <br>

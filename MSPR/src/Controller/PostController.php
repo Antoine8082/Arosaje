@@ -44,13 +44,19 @@ class PostController extends AbstractController
         $post = new Post();
         $form = $this->createForm(PostFormType::class, $post);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if($user != null && $form->isSubmitted() && $form->isValid()){
             $uploadFile = $form['image']->getData();;
             $originalFileName = pathinfo($uploadFile->getClientOriginalName(),PATHINFO_FILENAME);
             $safeFileName = preg_replace('/[^a-zA-Z0-9]/','_',$originalFileName);
             $newFileName = $safeFileName . '-'. uniqid() . '.' . $uploadFile->guessExtension();
             $uploadFile->move($this->getParameter('images_directory'),$newFileName);
+            if($_POST['latitude'] && $_POST['longitude']){
+                $post->setLongitude($_POST['longitude']);
+                $post->setLatitude($_POST['latitude']);
+            }
+            $post->setImage($newFileName);
             $post->setUserPost($user);
+            $post->setIsHeld(true);
             $em = $doctrine->getManager();
             $em->persist($post);
             $em->flush();

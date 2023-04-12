@@ -34,9 +34,10 @@
         <div class="image">
             <img src="{{ imagePath }}" alt="" id="img_card">
         </div>
+        <br>
         {% if app.user == post.userPost %}
             <a href="{{ path('app_delete_post', {'id': post.id}) }}">
-                <button>supprimer</button>
+                <button>Supprimer Post</button>
             </a>
         {% endif %}
     </div>

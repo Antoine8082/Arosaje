@@ -29,7 +29,7 @@ class PlantController extends AbstractController
         ]);
     }
     #[Route('/plants', name:'plants')]
-    public function usersList(PlantRepository $plants)
+    public function plantList(PlantRepository $plants)
     {
         return $this->render('plant/plants.html.twig', [
             'plants' => $plants->findAll(),
@@ -45,14 +45,6 @@ class PlantController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
-            if($form['image']){
-                $file = $form['image']->getData();
-                $originalFileName = pathinfo($file->getClientOriginalName(),PATHINFO_FILENAME);
-                $safeFileName = preg_replace('/[^a-zA-Z0-9]/','_',$originalFileName);
-                $newFileName = $safeFileName . '-'. uniqid() . '.' . $file->guessExtension();
-                $file->move($this->getParameter('images_directory'), $newFileName);
-                $plant->setImage($newFileName);
-            }
             $entityManager->persist($plant);
             $entityManager->flush();
 
@@ -64,5 +56,16 @@ class PlantController extends AbstractController
             'plantForm' => $form->createView(),
             'plant' => $plant,
         ]);
+    }
+    #[Route('/deleteplant/{id}', name: 'app_delete_plant')]
+    public function deletePlant(ManagerRegistry $doctrine,Plant $plant){
+
+        if (!$plant) {
+            throw $this->createNotFoundException('No post found');
+        }
+        $em = $doctrine->getManager();
+        $em->remove($plant);
+        $em->flush();
+        return $this->redirectToRoute('conseil_app_plant');
     }
 }

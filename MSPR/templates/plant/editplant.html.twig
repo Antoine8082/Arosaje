@@ -13,4 +13,5 @@
     <img src="{{ imagePath }}" alt="plant" style="width: 50px; height: 50px">
     {{ form_row(plantForm.valider) }}
     {{ form_end(plantForm) }}
+    <a href="{{ path('conseil_app_delete_plant', {'id': plant.id}) }}"><button>Supprimer plante</button></a>
 {% endblock %}

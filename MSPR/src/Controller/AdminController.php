@@ -79,7 +79,7 @@ class AdminController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('message', 'plante crée avec succès');
-            return $this->redirectToRoute('admin_app_admin');
+            return $this->redirectToRoute('conseil_app_plant');
         }
 
         return $this->render('admin/plant.html.twig', [

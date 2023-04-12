@@ -17,7 +17,7 @@ class GuardianFormType extends AbstractType
     {
         $builder
             ->add('guardian', EntityType::class, [
-                'placeholder' => 'Choose an option',
+                'placeholder' => 'Choisir une option',
                 'class' => User::class,
                 'query_builder' => function (UserRepository $ur) {
                     return $ur->createQueryBuilder('u')

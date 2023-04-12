@@ -24,7 +24,7 @@ class PostFormType extends AbstractType
             ->add('description', TextareaType::class)
             ->add('image',FileType::class)
             ->add('plantId',EntityType::class, [
-                'placeholder' => 'Choose an option',
+                'placeholder' => 'Choisir une option',
                 'class' => Plant::class,
                 'query_builder' => function (PlantRepository $pr) {
                     return $pr->createQueryBuilder('p')

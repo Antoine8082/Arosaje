@@ -3,6 +3,15 @@
 {% block title %}ajouter une plante{% endblock %}
 
 {% block body %}
-    <h1>ajouter une plante</h1>
-    {{ form(plantForm) }}
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+    <h1>Ajouter une plante</h1>
+    <div id="card">
+        {{ form_start(plantForm) }}
+
+        {{ form_row(plantForm.label, { 'label': 'Espèce/Type : ' }) }}
+        <br>
+        {{ form_row(plantForm.image, { 'label': 'Image : ' }) }}
+        <br>
+        {{ form_end(plantForm) }}
+    </div>
 {% endblock %}

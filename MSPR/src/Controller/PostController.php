@@ -64,4 +64,14 @@ class PostController extends AbstractController
             'postForm' => $form->createView(),]);
 
     }
+    #[Route('/deletepost/{id}', name: 'app_delete_post')]
+    public function deletePost(Post $post,ManagerRegistry $doctrine){
+        if (!$post) {
+            throw $this->createNotFoundException('No post found');
+        }
+        $em = $doctrine->getManager();
+        $em->remove($post);
+        $em->flush();
+        return $this->redirectToRoute('app_main');
+    }
 }

@@ -42,7 +42,7 @@ class PostController extends AbstractController
                 $post->setLatitude($_POST['latitude']);
             }
             $post->setImage($newFileName);
-            $post->setUser($user);
+            $user->addPost($post);
             $em = $doctrine->getManager();
             $em->persist($post);
             $em->flush();

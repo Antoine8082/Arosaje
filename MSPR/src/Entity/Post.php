@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -29,6 +30,7 @@ class Post
     private Collection $comments;
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'guarded_posts')]
+    #[Ignore]
     private ?User $guardian = null;
 
     #[ORM\Column(type: "string")]
@@ -39,6 +41,7 @@ class Post
     private ?Plant $plantId = null;
 
     #[ORM\ManyToOne(inversedBy: 'post')]
+    #[Ignore]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]

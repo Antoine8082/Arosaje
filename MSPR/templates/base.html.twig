@@ -37,8 +37,14 @@
         {% if app.user %}
             <li class="nav-item" style="margin-left: 12%"><a href="{{ path('app_logout') }}">Déconnexion</a></li>
         {% endif %}
+        {% if app.user  and app.request.attributes.get('_route') == "app_profile" %}
+            <li class="nav-item" style="margin-left: 12%"><a href="{{ path('app_delete_profile') }}">Supprimer compte</a></li>
+        {% endif %}
+        {% if app.user and is_granted('ROLE_BOT')%}
+            <li class="nav-item" style="margin-left: 12%"><a href="{{ path('conseil_app_plant') }}">Plantes</a></li>
+        {% endif %}
         {% if app.user and is_granted('ROLE_ADMIN')%}
-            <li class="nav-item" style="margin-left: 12%"><a href="{{ path('admin_app_admin') }}">administration</a></li>
+            <li class="nav-item" style="margin-left: 12%"><a href="{{ path('admin_app_admin') }}">Administration</a></li>
         {% endif %}
 
     </ul>

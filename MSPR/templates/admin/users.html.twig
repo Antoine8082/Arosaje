@@ -1,14 +1,15 @@
-
-{% block title %}Liste des utilisateurs{% endblock %}
+<head>
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+</head>
 
 {% block body %}
     <h1>Liste des utilisateurs</h1>
     <table>
         <thead>
-        <th>ID</th>
-        <th>Email</th>
-        <th>Rôles</th>
-        <th>Actions</th>
+        <th class="col-id">ID</th>
+        <th class="col-email">Email</th>
+        <th class="col-roles">Rôles</th>
+        <th class="col-actions">Actions</th>
         </thead>
         <tbody>
         {# On boucle sur les utilisateurs #}
@@ -28,7 +29,7 @@
                         {% endif %}
                     {% endfor %}
                 </td>
-                <td><a href="{{ path('admin_modifier_utilisateur', {'id': user.id}) }}">Modifier</a></td>
+                <td><a class="blue" href="{{ path('admin_modifier_utilisateur', {'id': user.id}) }}">Modifier</a></td>
             </tr>
 
         {% else %}

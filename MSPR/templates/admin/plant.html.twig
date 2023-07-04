@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ajouter une plante{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+    <h1>Ajouter une plante</h1>
+    <div id="card">
+        {{ form_start(plantForm) }}
+
+        {{ form_row(plantForm.label, { 'label': 'Espèce/Type : ' }) }}
+        <br>
+        {{ form_row(plantForm.image, { 'label': 'Image : ' }) }}
+        <br>
+        {{ form_row(plantForm.advice, { 'label': 'Conseil : ' }) }}
+        <br>
+        {{ form_end(plantForm) }}
+    </div>
+{% endblock %}

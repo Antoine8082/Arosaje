@@ -9,7 +9,7 @@
                 <div class="card-content">
                     <h3>{{ userPost.title}}</h3>
                     <p>{{ userPost.description }}</p>
-                    <label for="guardian">Guardian : </label>
+                    <label for="guardian">Gardien : </label>
                     {% if userPost.guardian %}
                         <input type="text" id="guardian" value="{{ userPost.guardian.email }}" disabled>
                     {% endif %}

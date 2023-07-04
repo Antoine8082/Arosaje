@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Plant;
 use App\Entity\User;
 use App\Form\EditUserType;
+use App\Form\PlantFormType;
 use App\Repository\UserRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,22 +41,49 @@ class AdminController extends AbstractController
 
      #[Route('/utilisateurs/modifier/{id}', name:'modifier_utilisateur')]
 
-    public function editUser(User $user, Request $request)
+    public function editUser(User $user, Request $request, ManagerRegistry $doctrine)
     {
         $form = $this->createForm(EditUserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $doctrine->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
             $this->addFlash('message', 'Utilisateur modifié avec succès');
-            return $this->redirectToRoute('admin_utilisateurs');
+            return $this->redirectToRoute('admin_app_admin');
         }
 
         return $this->render('admin/edituser.html.twig', [
             'userForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/plant', name:'add_plant')]
+    public function addPlant(Request $request,ManagerRegistry $doctrine)
+    {
+        $plant = new Plant();
+        $form = $this->createForm(PlantFormType::class, $plant);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['image']->getData();
+            $originalFileName = pathinfo($file->getClientOriginalName(),PATHINFO_FILENAME);
+            $safeFileName = preg_replace('/[^a-zA-Z0-9]/','_',$originalFileName);
+            $newFileName = $safeFileName . '-'. uniqid() . '.' . $file->guessExtension();
+            $file->move($this->getParameter('images_directory'), $newFileName);
+            $plant->setImage($newFileName);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($plant);
+            $entityManager->flush();
+
+            $this->addFlash('message', 'plante crée avec succès');
+            return $this->redirectToRoute('conseil_app_plant');
+        }
+
+        return $this->render('admin/plant.html.twig', [
+            'plantForm' => $form->createView(),
         ]);
     }
 

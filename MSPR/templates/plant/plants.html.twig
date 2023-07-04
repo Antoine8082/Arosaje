@@ -1,0 +1,39 @@
+<head>
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+</head>
+
+{% block body %}
+<h1>Liste des plantes</h1>
+    <div class="container-table">
+        <table>
+            <thead>
+            <th class="col-id">ID</th>
+            <th class="col-label">Espèce/Type</th>
+            <th class="col-image">Photo</th>
+            <th class="col-conseil">Conseil</th>
+            <th class="col-actions">Actions</th>
+            </thead>
+            <tbody>
+            {# On boucle sur les utilisateurs #}
+            {% for plant in plants %}
+                {% set imagePath = '/uploads/images/' ~ plant.image %}
+                <tr>
+                    <td>{{ plant.id }}</td>
+                    <td>{{ plant.label }}</td>
+                    <td>
+                        <img src="{{ imagePath }}" alt="plant" style="width: 50px; height: 50px">
+                    </td>
+                    <td>
+                        {{ plant.advice }}
+                    </td>
+                    <td><a class="blue" href="{{ path('conseil_modifier_plant', {'id': plant.id}) }}">Modifier</a></td>
+                </tr>
+
+            {% else %}
+                <p>Aucune plante enregistrée</p>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

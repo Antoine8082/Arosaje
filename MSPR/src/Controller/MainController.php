@@ -28,11 +28,14 @@ class MainController extends AbstractController
     }
 
     #[Route('/profile', name: 'app_profile')]
-    public function profile(): Response
+    public function profile(EntityManagerInterface $em): Response
     {
+        $pr = $em->getRepository(Post::class);
+        $guardedPosts = $pr->findBy(['guardian'=>$this->getUser()->getId()]);
+
         return $this->render('profile/index.html.twig',[
             'posts'=> $this->getUser()->getPost(),
-            'guardedPosts'=>$this->getUser()->getGuardedPosts()
+            'guardedPosts'=> $guardedPosts
             ]
         );
     }

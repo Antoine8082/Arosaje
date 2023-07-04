@@ -13,7 +13,7 @@
                     {% if userPost.guardian %}
                         <input type="text" id="guardian" value="{{ userPost.guardian.email }}" disabled>
                     {% endif %}
-                    <p>{{ userPost.userPost.email }}</p>
+                    <p>{{ userPost.user.email }}</p>
                 </div>
                 <div class="image">
                     <img src="{{ imagePath }}" alt="" id="img_card">
@@ -26,7 +26,7 @@
                 <div class="card-content">
                     <h3>{{ userGuardedPost.title}}</h3>
                     <p>{{ userGuardedPost.description }}</p>
-                    <p>{{ userGuardedPost.userPost.email }}</p>
+                    <p>{{ userGuardedPost.user.email }}</p>
                 </div>
                 <div class="image">
                     <img src="{{ imagePath }}" alt="" id="img_card">

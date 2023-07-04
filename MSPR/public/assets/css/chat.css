@@ -1,0 +1,26 @@
+.chat-list{
+    display: flex;
+    flex-direction: column;
+    border: black 1px solid;
+
+}
+.chat{
+    padding: 10px;
+    border: black 1px solid;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.container-messages{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    height: 600px;
+    width: 100%;
+    overflow-y: scroll;
+}
+.actual-chat{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-end;
+}

@@ -43,12 +43,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Ignore]
     private Collection $post;
 
+    #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: Chat::class)]
+    private Collection $chats;
+
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->post = new ArrayCollection();
         $this->Comments = new ArrayCollection();
         $this->guarded_posts = new ArrayCollection();
+        $this->chats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -180,4 +185,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Chat>
+     */
+    public function getChats(): Collection
+    {
+        return $this->chats;
+    }
+
+    public function addChat(Chat $chat): self
+    {
+        if (!$this->chats->contains($chat)) {
+            $this->chats->add($chat);
+            $chat->setReceiver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChat(Chat $chat): self
+    {
+        if ($this->chats->removeElement($chat)) {
+            // set the owning side to null (unless already changed)
+            if ($chat->getReceiver() === $this) {
+                $chat->setReceiver(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

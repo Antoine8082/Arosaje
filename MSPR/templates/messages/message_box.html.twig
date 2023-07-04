@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% block title %}Liste des demandes{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/chat.css') }}">
+{% endblock %}
+{% block body %}
+    <h2 style="text-align: center">Liste demandes :</h2>
+    <div class="new-message">
+        <button id="btn_modal">Ouvrir une nouvelle discussion</button>
+    </div>
+    <div class="container-messages">
+        <div class="chat-list">
+        {% for chat in chats %}
+            <div class="chat">
+                {{ chat.receiver.email }}
+            </div>
+        {% endfor %}
+        </div>
+        <div class="actual-chat">
+            <div class="chat-input">
+                <form action="" method="post">
+                    <input type="text" name="message" id="message" placeholder="Votre message">
+                    <button type="submit">Envoyer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="myModal" class="modal" style="display: none">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <select name="user_chat" class="select2_users">
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.email }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <script>
+        // Get the modal
+        $(document).ready(function() {
+            $('.select2_users').select2();
+            $('.select2_users').on('change', () => {
+                var user_id = $('.select2_users').val();
+                $.ajax({
+                    url: "{{ path('chat_new') }}",
+                    type: "POST",
+                    data: {
+                        user_id: user_id
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                })
+            })
+        });
+        var modal = document.getElementById("myModal");
+        const btn_trigger_modal = document.getElementById("btn_modal");
+        btn_trigger_modal.addEventListener('click', () => {
+            modal.style.display = "block";
+        })
+        window.onclick = (event) => {
+            if(event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+    </script>
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}

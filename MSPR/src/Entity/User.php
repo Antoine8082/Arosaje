@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,6 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -32,17 +34,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'Users', targetEntity: Post::class)]
-    private Collection $posts;
-
-    #[ORM\OneToMany(mappedBy: 'user_post', targetEntity: Post::class, orphanRemoval: true)]
-    private Collection $post;
 
     #[ORM\OneToMany(mappedBy: 'user_comment', targetEntity: Comments::class, orphanRemoval: true)]
     private Collection $Comments;
 
-    #[ORM\OneToMany(mappedBy: 'guardian', targetEntity: Post::class)]
-    private Collection $guarded_posts;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Post::class)]
+    private Collection $post;
 
     public function __construct()
     {
@@ -123,36 +120,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Post>
-     */
-    public function getPost(): Collection
-    {
-        return $this->post;
-    }
-
-    public function addPost(Post $post): self
-    {
-        if (!$this->post->contains($post)) {
-            $this->post->add($post);
-            $post->setUserPost($this);
-        }
-
-        return $this;
-    }
-
-    public function removePost(Post $post): self
-    {
-        if ($this->post->removeElement($post)) {
-            // set the owning side to null (unless already changed)
-            if ($post->getUserPost() === $this) {
-                $post->setUserPost(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Comments>
      */
     public function getComments(): Collection
@@ -185,27 +152,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Post>
      */
-    public function getGuardedPosts(): Collection
+    public function getPost(): Collection
     {
-        return $this->guarded_posts;
+        return $this->post;
     }
 
-    public function addGuardedPost(Post $guardedPost): self
+    public function addPost(Post $post): self
     {
-        if (!$this->guarded_posts->contains($guardedPost)) {
-            $this->guarded_posts->add($guardedPost);
-            $guardedPost->setGuardian($this);
+        if (!$this->post->contains($post)) {
+            $this->post->add($post);
+            $post->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeGuardedPost(Post $guardedPost): self
+    public function removePost(Post $post): self
     {
-        if ($this->guarded_posts->removeElement($guardedPost)) {
+        if ($this->post->removeElement($post)) {
             // set the owning side to null (unless already changed)
-            if ($guardedPost->getGuardian() === $this) {
-                $guardedPost->setGuardian(null);
+            if ($post->getUser() === $this) {
+                $post->setUser(null);
             }
         }
 

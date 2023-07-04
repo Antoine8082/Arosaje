@@ -34,7 +34,7 @@ class PostController extends AbstractController
             $uploadFile->move($this->getParameter('images_directory'),$newFileName);
             $post->setDescription($_POST['description']);
             $post->setTitle($_POST['title']);
-            $post->setUserPost($this->getUser());
+            $post->setUser($this->getUser());
             $post->setImage($newFileName);
             $plant = new Plant();
             $plant->setLabel($_POST['plant']);
@@ -45,7 +45,10 @@ class PostController extends AbstractController
             $em->flush();
         }
 
-        return $this->render('post/form.html.twig');
+        return $this->render('post/detail.html.twig', [
+            'post' => $post,
+            "users" => $em->getRepository(User::class)->findAll(),
+        ]);
 
     }
 }

@@ -28,9 +28,6 @@ class Post
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comments::class, orphanRemoval: true)]
     private Collection $comments;
 
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user_post = null;
-
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'guarded_posts')]
     private ?User $guardian = null;
 
@@ -40,6 +37,9 @@ class Post
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Plant $plantId = null;
+
+    #[ORM\ManyToOne(inversedBy: 'post')]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -116,18 +116,6 @@ class Post
         return $this;
     }
 
-    public function getUserPost(): ?User
-    {
-        return $this->user_post;
-    }
-
-    public function setUserPost(?User $user_post): self
-    {
-        $this->user_post = $user_post;
-
-        return $this;
-    }
-
     public function getGuardian(): ?User
     {
         return $this->guardian;
@@ -160,6 +148,18 @@ class Post
     public function setPlantId(?Plant $plantId): self
     {
         $this->plantId = $plantId;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

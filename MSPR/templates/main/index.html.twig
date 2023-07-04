@@ -10,8 +10,8 @@
                     <div class="card-content">
                         <h3>{{ post.title|capitalize }}</h3>
                         <p>{{ post.description }}</p>
-                        <p>Auteur : {% if post.userPost %}
-                                {{ post.userPost.email }}
+                        <p>Auteur : {% if post.user is not null%}
+                                {{ post.user.email }}
                                 {% else %}
                                 Anonyme
                             {% endif %}</p>

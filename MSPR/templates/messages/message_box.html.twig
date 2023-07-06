@@ -149,10 +149,11 @@
                     chatContainer.removeChild(chatContainer.firstChild);
                 }
             }
-            if(!data[0]){
+            console.log(data)
+            chatContainer.id = data[0].id;
+            if(!data[0].content){
                 return;
             }
-            chatContainer.id = data[0].id;
             data.forEach((message) => {
                 createMessage(message);
             })

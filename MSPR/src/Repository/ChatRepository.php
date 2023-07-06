@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Chat;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Chat>
@@ -38,6 +40,14 @@ class ChatRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findAllChat($user){
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.receiver = :user')
+            ->orWhere('c.sender = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Chat[] Returns an array of Chat objects
@@ -63,4 +73,16 @@ class ChatRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findChat(?UserInterface $user, User $targetUser)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.receiver = :user')
+            ->andWhere('c.sender = :targetUser')
+            ->orWhere('c.receiver = :targetUser')
+            ->orWhere('c.sender = :user')
+            ->setParameter('user', $user)
+            ->setParameter('targetUser', $targetUser)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

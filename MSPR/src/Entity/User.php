@@ -43,7 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Ignore]
     private Collection $post;
 
-    #[ORM\OneToMany(mappedBy: 'receiver', targetEntity: Chat::class)]
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Chat::class)]
     private Collection $chats;
 
 
@@ -198,7 +198,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->chats->contains($chat)) {
             $this->chats->add($chat);
-            $chat->setReceiver($this);
         }
 
         return $this;

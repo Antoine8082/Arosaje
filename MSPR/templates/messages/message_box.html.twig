@@ -9,27 +9,57 @@
     <div class="new-message">
         <button id="btn_modal">Ouvrir une nouvelle discussion</button>
     </div>
-    <div class="container-messages">
-        <div class="chat-list">
-        {% for chat in chats %}
-            <div class="chat">
-                {{ chat.receiver.email }}
-            </div>
-        {% endfor %}
-        </div>
-        <div class="actual-chat">
-            <div class="chat-input">
-                <form action="" method="post">
-                    <input type="text" name="message" id="message" placeholder="Votre message">
-                    <button type="submit">Envoyer</button>
-                </form>
-            </div>
-        </div>
+    <div id="container">
+        <aside>
+            <header>
+                <input type="text" placeholder="search">
+            </header>
+            <ul>
+                {% for chat in chats %}
+                    {% if app.user.email == chat.receiver.email %}
+                        <li id="{{ chat.sender.id }}" class="chat_start">
+                        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngfind.com%2Fpngs%2Fm%2F93-938050_png-file-transparent-white-user-icon-png-download.png&f=1&nofb=1&ipt=c1aa809cc65f365137d11d4ba1953e789851dc2fff50671b325f5262f8197eb6&ipo=images">
+                        <div>
+                        <h2>{{ chat.sender.email }}</h2>
+                    {% else %}
+                        <li id="{{ chat.receiver.id }}" class="chat_start">
+                        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngfind.com%2Fpngs%2Fm%2F93-938050_png-file-transparent-white-user-icon-png-download.png&f=1&nofb=1&ipt=c1aa809cc65f365137d11d4ba1953e789851dc2fff50671b325f5262f8197eb6&ipo=images">
+                        <div>
+                        <h2>{{ chat.receiver.email }}</h2>
+                    {% endif %}
+                            <h3>
+                                <span class="status green"></span>
+                                online
+                            </h3>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </aside>
+        <main>
+            <header>
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
+                <div>
+                    <h2>Chat with Vincent Porter</h2>
+                    <h3>already 1902 messages</h3>
+                </div>
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
+            </header>
+            <ul class="chat">
+            </ul>
+            <footer>
+                <textarea placeholder="Type your message" id="msg_input"></textarea>
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_picture.png" alt="">
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_file.png" alt="">
+                <a id="btn_send_msg">Send</a>
+            </footer>
+        </main>
     </div>
     <div id="myModal" class="modal" style="display: none">
         <!-- Modal content -->
         <div class="modal-content">
             <select name="user_chat" class="select2_users">
+                <option value="#">Sélectionnez un utilisateur</option>
                 {% for user in users %}
                     <option value="{{ user.id }}">{{ user.email }}</option>
                 {% endfor %}
@@ -63,6 +93,86 @@
             if(event.target == modal) {
                 modal.style.display = "none";
             }
+        }
+        document.querySelectorAll('.chat_start').forEach((li) => {
+            li.addEventListener('click', () => {
+                loadChat(li.id)
+            })
+        })
+        const chatContainer = document.querySelector('.chat')
+        async function loadChat(id){
+            const opt = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    targetUser: id
+                })
+            }
+            const response = await fetch("{{ path('chat_load') }}", opt);
+            const data = await response.json();
+            chatContainer.innerHTML = "<div class='spinner'></div>";
+            await buildChat(data);
+        }
+        const btn_send_msg = document.getElementById("btn_send_msg");
+        btn_send_msg.addEventListener('click', () => {
+            sendMsg();
+        })
+
+        async function sendMsg(){
+            const msg = document.getElementById('msg_input').value;
+            const chatId = chatContainer.id;
+            const opt = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    content : msg,
+                    chatId : chatId
+                })
+            }
+            const response = await fetch("{{ path('chat_send') }}", opt);
+            if(response.ok){
+                const data = await response.json();
+                await createMessage({
+                    sender: "{{ app.user.email }}",
+                    content: msg,
+                    date: new Date('now')
+                });
+            }
+        }
+        async function buildChat(data){
+            if(chatContainer.childElementCount > 0){
+                while(chatContainer.firstChild){
+                    chatContainer.removeChild(chatContainer.firstChild);
+                }
+            }
+            if(!data[0]){
+                return;
+            }
+            chatContainer.id = data[0].id;
+            data.forEach((message) => {
+                createMessage(message);
+            })
+        }
+        async function createMessage(message){
+            const userConnected ="{{ app.user.email }}"
+            const html = `
+                    <li class="${message.sender == userConnected ? "me" : "you"} new-message">
+                    <div class="entete">
+                        <h3>${message.date}</h3>
+                        <h2>${message.sender}</h2>
+                        <span class="status blue"></span>
+                    </div>
+                    <div class="triangle"></div>
+                    <div class="message">
+                        ${message.content}
+                    </div>
+                </li>`
+            chatContainer.innerHTML += html;
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
     </script>

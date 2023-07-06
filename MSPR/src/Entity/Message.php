@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
@@ -20,11 +21,13 @@ class Message
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $send_at = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(fetch: 'LAZY')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
     private ?User $sender = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[Ignore]
     private ?Chat $chat = null;
 
     public function getId(): ?int

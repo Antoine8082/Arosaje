@@ -19,10 +19,10 @@ class Chat
     #[ORM\ManyToOne(inversedBy: 'chats')]
     private ?User $receiver;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(fetch: 'LAZY')]
     private ?User $sender = null;
 
-    #[ORM\OneToMany(mappedBy: 'chat', targetEntity: Message::class)]
+    #[ORM\OneToMany(mappedBy: 'chat', targetEntity: Message::class, fetch: 'EAGER')]
     private Collection $messages;
 
     public function __construct()

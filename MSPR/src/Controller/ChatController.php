@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Chat;
+use App\Entity\Message;
+use App\Repository\ChatRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,12 +20,35 @@ class ChatController extends AbstractController
     {
         if($request->getMethod() === "POST"){
             $chat = new Chat();
+            $receiver = $ur->find($_POST['user_id']);
+            $chat->setReceiver($receiver);
             $chat->setSender($this->getUser());
-            $chat->setReceiver($ur->find($request->get('user_id')));
+            $receiver->addChat($chat);
             $this->getUser()->addChat($chat);
             $em->persist($chat);
             $em->flush();
             return new JsonResponse(["success" => true]);
+        }else{
+            return new JsonResponse("Error",Response::HTTP_BAD_REQUEST,[],true);
+        }
+    }
+    #[Route('/chat/send', name: 'chat_send')]
+    public function send(Request $request, ChatRepository $cr, EntityManagerInterface $em) : JsonResponse
+    {
+        if($request->getMethod() == "POST"){
+            $data = json_decode($request->getContent(),true);
+            $chat = $cr->find($data['chatId']);
+            $message = new Message();
+            $message->setSender($this->getUser());
+            $message->setContent($data['content']);
+            $message->setSendAt(new \DateTime('now'));
+            $message->setChat($chat);
+            $em->persist($message);
+            $chat->addMessage($message);
+            $em->flush();
+            return new JsonResponse(json_encode('Success'),Response::HTTP_OK,[],true);
+        }else{
+            return new JsonResponse("Error",Response::HTTP_BAD_REQUEST,[],true);
         }
     }
 }

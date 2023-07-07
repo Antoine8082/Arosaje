@@ -12,11 +12,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ChatController extends AbstractController
 {
     #[Route('/chat/new', name: 'chat_new')]
-    public function new(Request $request, EntityManagerInterface $em, UserRepository $ur): JsonResponse
+    public function new(Request $request, EntityManagerInterface $em, UserRepository $ur, SerializerInterface $serializer): JsonResponse
     {
         if($request->getMethod() === "POST"){
             $chat = new Chat();
@@ -27,7 +28,14 @@ class ChatController extends AbstractController
             $this->getUser()->addChat($chat);
             $em->persist($chat);
             $em->flush();
-            return new JsonResponse(["success" => true]);
+            $data = [
+                "id" => $chat->getId(),
+                "receiver" => $chat->getReceiver()->getEmail(),
+                "sender" => $chat->getSender()->getEmail(),
+                "idReceiver" => $chat->getReceiver()->getId(),
+                "idSender" => $chat->getSender()->getId(),
+            ];
+            return new JsonResponse(json_encode($data),Response::HTTP_OK,[],true);
         }else{
             return new JsonResponse("Error",Response::HTTP_BAD_REQUEST,[],true);
         }

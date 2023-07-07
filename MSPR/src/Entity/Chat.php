@@ -16,7 +16,7 @@ class Chat
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'chats')]
+    #[ORM\ManyToOne(fetch: 'LAZY', inversedBy: 'chats')]
     private ?User $receiver;
 
     #[ORM\ManyToOne(fetch: 'LAZY')]

@@ -93,24 +93,28 @@ class APIController extends AbstractController
             $chats = $cr->findAllChat($this->getUser());
             foreach ($chats as $chat){
                 $data= [];
-                if($chat->getSender()->getId() == $targetUser || $chat->getReceiver()->getId() == $targetUser){
-                    if($chat->getMessages()->count() > 0){
+                if($chat->getMessages()->count() > 0){
+                    $countMessage = $chat->getMessages()->count();
+                    $data =[
+                        'count' => $countMessage,
+                        'target' => $ur->find($targetUser)->getEmail(),
+                    ];
+                    if($chat->getSender()->getId() == $targetUser || $chat->getReceiver()->getId() == $targetUser){
                         foreach ($chat->getMessages() as $message){
-                            $data[] = [
+                            $data["messages"][] = [
                                 'content' => $message->getContent(),
                                 'sender' => $message->getSender()->getEmail(),
                                 'date' => $message->getSendAt()->format('d-m-Y H:i:s'),
                                 'id' => $chat->getId()
                             ];
                         }
-                        return new JsonResponse($serializer->serialize($data,'json'),200, [], true);
                     }else{
                         $data[] = [
                             'id' => $chat->getId()
                         ];
-                        return new JsonResponse($serializer->serialize($data,'json'),200, [], true);
                     }
-                    }
+                    return new JsonResponse($serializer->serialize($data,'json'),200, [], true);
+                }
         }
         }
         return new JsonResponse("Wrong method",400);

@@ -2,7 +2,26 @@
 * {
     font-family: "Roboto", sans-serif;
 }
+.detail-title{
+    text-align: center;
+    font-weight: lighter;
 
+}
+.detail-card{
+    padding: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 50px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    transition: .5s;
+    width: 70%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+}
 .success{
     background-color: greenyellow;
 }
@@ -10,8 +29,11 @@
     background-color: red;
 }
 #img_card{
-    width: 300px;
-    height: 300px;
+    width: 60%;
+    height: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 50px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 #comments-container{
     display: flex;
@@ -63,7 +85,6 @@
 }
 .container-detail {
     display: flex;
-
     flex-direction: column;
     align-items: center;
     width: 70%;
@@ -112,11 +133,20 @@ textarea {
 .results > a:hover{
     background-color: lightgrey;
 }
+.guard{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .search_user{
     position: relative;
+    display: flex;
+    align-items: center;
 }
 .search_user > input{
-    width: 300px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
     height: 20px;
     /*background-color: blue;*/
     border-top-left-radius: 5px;

@@ -4,9 +4,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/detail.css') }}">
 {% endblock %}
 {% block body %}
-    <h2 style="text-align: center">{{ post.title|capitalize }}</h2>
+    <div class="detail-card">
+    <h2 class="detail-title">{{ post.title|capitalize }}</h2>
     <div class="container-detail">
         {% if app.user.id == post.user.id %}
+            <div class="guard">
             <label for="guardian">Gardien :</label>
             {% if not post.guardian %}
                 <div class="search_user">
@@ -28,11 +30,13 @@
             {% endif %}
         {% endif %}
         <span id="res_fetch_guardian"></span>
+            </div>
         {% set imagePath = '/uploads/images/' ~ post.image %}
         <p>{{ post.description }}</p>
         <div class="image">
             <img src="{{ imagePath }}" alt="" id="img_card">
         </div>
+    </div>
     </div>
     <section>
         <h3>Espace commentaire</h3>

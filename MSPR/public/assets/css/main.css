@@ -1,7 +1,10 @@
 * {
     font-family: "Roboto", sans-serif;
 }
-
+.post-list-title {
+    text-align: center;
+    font-weight: lighter;
+}
 #card {
     padding: 16px;
     margin-bottom: 1em;
@@ -26,8 +29,6 @@
     height: 200px;
     max-height: 200px;
     width: auto;
-    
-
 }
 .card-content{
     display: flex;

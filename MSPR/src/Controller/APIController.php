@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Chat;
 use App\Entity\Comments;
+use App\Repository\ChatRepository;
 use App\Repository\CommentsRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
@@ -12,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class APIController extends AbstractController
 {
@@ -79,5 +82,41 @@ class APIController extends AbstractController
                 return new JsonResponse(false);
             }
         }
+    }
+
+    #[Route('/api/loadChat', name : 'chat_load')]
+    public function loadChat(Request $request, ChatRepository $cr, UserRepository $ur, SerializerInterface $serializer ){
+        if($request->getMethod() == "POST"){
+            $data = json_decode($request->getContent(),true);
+            $targetUser = (int)$data['targetUser'];
+            $user = $this->getUser();
+            $chats = $cr->findAllChat($this->getUser());
+            foreach ($chats as $chat){
+                $data= [];
+                if($chat->getMessages()->count() > 0){
+                    $countMessage = $chat->getMessages()->count();
+                    $data =[
+                        'count' => $countMessage,
+                        'target' => $ur->find($targetUser)->getEmail(),
+                    ];
+                    if($chat->getSender()->getId() == $targetUser || $chat->getReceiver()->getId() == $targetUser){
+                        foreach ($chat->getMessages() as $message){
+                            $data["messages"][] = [
+                                'content' => $message->getContent(),
+                                'sender' => $message->getSender()->getEmail(),
+                                'date' => $message->getSendAt()->format('d-m-Y H:i:s'),
+                                'id' => $chat->getId()
+                            ];
+                        }
+                    }else{
+                        $data[] = [
+                            'id' => $chat->getId()
+                        ];
+                    }
+                    return new JsonResponse($serializer->serialize($data,'json'),200, [], true);
+                }
+        }
+        }
+        return new JsonResponse("Wrong method",400);
     }
 }

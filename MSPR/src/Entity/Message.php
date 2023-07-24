@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
@@ -14,45 +15,24 @@ class Message
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'messages')]
-    private ?User $author = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $created_at = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\ManyToOne]
-    private ?User $recipient = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $send_at = null;
+
+    #[ORM\ManyToOne(fetch: 'LAZY')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
+    private ?User $sender = null;
+
+    #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[Ignore]
+    private ?Chat $chat = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?User $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $created_at): self
-    {
-        $this->created_at = $created_at;
-
-        return $this;
     }
 
     public function getContent(): ?string
@@ -60,21 +40,45 @@ class Message
         return $this->content;
     }
 
-    public function setContent(?string $content): self
+    public function setContent(string $content): self
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function getRecipient(): ?User
+    public function getSendAt(): ?\DateTimeInterface
     {
-        return $this->recipient;
+        return $this->send_at;
     }
 
-    public function setRecipient(?User $recipient): self
+    public function setSendAt(\DateTimeInterface $send_at): self
     {
-        $this->recipient = $recipient;
+        $this->send_at = $send_at;
+
+        return $this;
+    }
+
+    public function getSender(): ?User
+    {
+        return $this->sender;
+    }
+
+    public function setSender(?User $sender): self
+    {
+        $this->sender = $sender;
+
+        return $this;
+    }
+
+    public function getChat(): ?Chat
+    {
+        return $this->chat;
+    }
+
+    public function setChat(?Chat $chat): self
+    {
+        $this->chat = $chat;
 
         return $this;
     }

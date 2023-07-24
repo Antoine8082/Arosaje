@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Message;
 use App\Entity\Post;
+use App\Repository\ChatRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -54,6 +56,14 @@ class MainController extends AbstractController
     public function agreeTerms(EntityManagerInterface $em, Request $request): Response
     {
         return $this->render('main/cgu.html.twig', [
+        ]);
+    }
+    #[Route('/messages', name: 'message_box')]
+    public function about(EntityManagerInterface $em, Request $request, UserRepository $ur, ChatRepository $cr): Response
+    {
+        return $this->render('messages/message_box.html.twig', [
+            "chats" =>$cr->findAllChat($this->getUser()),
+            "users" => $ur->findAll()
         ]);
     }
 }
